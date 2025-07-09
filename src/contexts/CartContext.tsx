@@ -270,10 +270,16 @@ interface CartContextType {
   setCartOpen: (open: boolean) => void;
 }
 
-const CartContext = createContext<{ state: CartState; dispatch: React.Dispatch<CartAction> } | undefined>(undefined);
+const CartContext = createContext<{ 
+  state: CartState; 
+  dispatch: React.Dispatch<CartAction>;
+  cartOpen: boolean;
+  setCartOpen: (open: boolean) => void;
+} | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [state, dispatch] = useReducer(cartReducer, { items: [] });
+  const [cartOpen, setCartOpen] = useState(false);
 
   // Load cart from localStorage on mount
   useEffect(() => {
@@ -298,7 +304,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [state]);
 
   return (
-    <CartContext.Provider value={{ state, dispatch }}>
+    <CartContext.Provider value={{ state, dispatch, cartOpen, setCartOpen }}>
       {children}
     </CartContext.Provider>
   );
@@ -310,7 +316,7 @@ export const useCart = (): CartContextType => {
     throw new Error('useCart must be used within a CartProvider');
   }
 
-  const { state, dispatch } = context;
+  const { state, dispatch, cartOpen, setCartOpen } = context;
   const [isLoadingRecommendations, setIsLoadingRecommendations] = useState(false);
   
   // Get postcode and nearby stores from PostcodeContext
@@ -451,5 +457,7 @@ export const useCart = (): CartContextType => {
     getBestStore,
     refreshAvailability,
     isLoadingRecommendations,
+    cartOpen,
+    setCartOpen,
   };
 }; 
