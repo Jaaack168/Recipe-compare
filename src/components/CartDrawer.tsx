@@ -75,12 +75,12 @@ export function CartDrawer() {
     <>
       {/* Backdrop */}
       <div 
-        className="fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity"
+        className="fixed inset-0 bg-black bg-opacity-50 z-40 transition-all duration-300 ease-in-out animate-in fade-in"
         onClick={() => setCartOpen(false)}
       />
       
       {/* Slide-out Cart Panel */}
-      <div className="fixed right-0 top-0 h-full w-full max-w-md bg-white z-50 shadow-2xl transform transition-transform duration-300 ease-in-out overflow-y-auto">
+      <div className="fixed right-0 top-0 h-full w-full max-w-md bg-white z-50 shadow-2xl transform transition-all duration-300 ease-in-out overflow-y-auto animate-in slide-in-from-right">
         {/* Close Button Header */}
         <div className="sticky top-0 bg-white border-b border-gray-200 px-4 py-4 flex items-center justify-between z-10">
           <h2 className="text-xl font-bold text-gray-900">🛒 Your Cart</h2>
