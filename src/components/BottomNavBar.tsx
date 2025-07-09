@@ -11,7 +11,7 @@ export function BottomNavBar() {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-dark-soft-light border-t border-gray-200 dark:border-dark-soft-border z-40">
+    <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-dark-soft-light border-t border-gray-200 dark:border-dark-soft-border z-45">
       <div className="flex justify-around items-center py-2 max-w-md mx-auto">
         <Link 
           to="/" 
