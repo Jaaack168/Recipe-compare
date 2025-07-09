@@ -1,0 +1,162 @@
+[
+  {
+    "id": 3001,
+    "title": "5-Minute Mug Omelet",
+    "image": "https://images.unsplash.com/photo-1588137378633-dea1336ce1e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=880&q=80",
+    "time": "5 min",
+    "price": "£1.80",
+    "available": true,
+    "mealType": "Breakfast",
+    "rating": 4,
+    "servings": 1,
+    "summary": "Perfect microwave omelet ready in just 5 minutes.",
+    "ingredients": [
+      "2 large eggs",
+      "2 tbsp milk",
+      "2 tbsp shredded cheese",
+      "2 tbsp diced ham or vegetables",
+      "Salt and pepper to taste",
+      "1 tsp butter"
+    ],
+    "instructions": [
+      "Grease a microwave-safe mug with butter.",
+      "Crack eggs into the mug and whisk with milk.",
+      "Add cheese, ham or vegetables, salt, and pepper.",
+      "Microwave on high for 90 seconds.",
+      "Stir gently and microwave for another 45-60 seconds.",
+      "Let cool for 1 minute before eating.",
+      "Serve directly from the mug or turn out onto a plate."
+    ],
+    "tags": ["quick", "easy", "microwave", "eggs", "breakfast"]
+  },
+  {
+    "id": 3002,
+    "title": "One-Pan Chicken & Rice",
+    "image": "https://images.unsplash.com/photo-1603133872878-684f208fb84b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=880&q=80",
+    "time": "20 min",
+    "price": "£4.75",
+    "available": true,
+    "mealType": "Dinner",
+    "rating": 5,
+    "servings": 2,
+    "summary": "Complete one-pan meal with minimal cleanup required.",
+    "ingredients": [
+      "2 chicken thighs, boneless",
+      "1 cup jasmine rice",
+      "1.5 cups chicken broth",
+      "1 onion, diced",
+      "1 bell pepper, diced",
+      "2 tbsp olive oil",
+      "1 tsp paprika",
+      "1 tsp garlic powder",
+      "Salt and pepper"
+    ],
+    "instructions": [
+      "Heat olive oil in a large skillet over medium-high heat.",
+      "Season chicken with salt, pepper, and paprika.",
+      "Cook chicken for 5 minutes per side until golden. Remove and set aside.",
+      "Add onion and pepper to the same pan, cook for 3 minutes.",
+      "Add rice and stir for 1 minute.",
+      "Pour in broth and bring to a boil.",
+      "Return chicken to pan, reduce heat, cover and simmer for 12 minutes.",
+      "Let rest 5 minutes before serving."
+    ],
+    "tags": ["one-pan", "easy", "chicken", "rice", "minimal-cleanup"]
+  },
+  {
+    "id": 3003,
+    "title": "3-Ingredient Pancakes",
+    "image": "https://images.unsplash.com/photo-1590301157890-4810ed352733?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=880&q=80",
+    "time": "8 min",
+    "price": "£2.20",
+    "available": true,
+    "mealType": "Breakfast",
+    "rating": 4,
+    "servings": 2,
+    "summary": "Simple pancakes with just banana, eggs, and oats.",
+    "ingredients": [
+      "1 ripe banana",
+      "2 large eggs",
+      "1/2 cup rolled oats",
+      "Pinch of cinnamon (optional)",
+      "Butter for cooking",
+      "Honey or maple syrup for serving"
+    ],
+    "instructions": [
+      "Mash banana in a bowl until smooth.",
+      "Beat in eggs until well combined.",
+      "Stir in oats and cinnamon if using.",
+      "Let batter rest for 2 minutes.",
+      "Heat butter in a non-stick pan over medium heat.",
+      "Pour 1/4 cup batter per pancake into the pan.",
+      "Cook for 2-3 minutes until bubbles form, then flip.",
+      "Cook for another 1-2 minutes until golden."
+    ],
+    "tags": ["3-ingredient", "healthy", "gluten-free", "banana", "oats"]
+  },
+  {
+    "id": 3004,
+    "title": "Lightning Ramen Upgrade",
+    "image": "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=880&q=80",
+    "time": "7 min",
+    "price": "£2.95",
+    "available": true,
+    "mealType": "Lunch",
+    "rating": 4,
+    "servings": 1,
+    "summary": "Transform instant ramen into a gourmet meal in minutes.",
+    "ingredients": [
+      "1 packet instant ramen noodles",
+      "1 egg",
+      "2 spring onions, sliced",
+      "1 tsp sesame oil",
+      "1 tsp soy sauce",
+      "1/2 tsp sriracha sauce",
+      "1 clove garlic, minced",
+      "Handful of spinach"
+    ],
+    "instructions": [
+      "Cook ramen noodles according to package instructions, drain and set aside.",
+      "In the same pot, add a little water and bring to simmer.",
+      "Crack egg into simmering water and poach for 3 minutes.",
+      "Remove egg and set aside.",
+      "Add garlic and spinach to pot, cook until wilted.",
+      "Return noodles to pot with sesame oil and soy sauce.",
+      "Transfer to bowl and top with poached egg.",
+      "Garnish with spring onions and drizzle with sriracha."
+    ],
+    "tags": ["quick", "ramen", "upgrade", "egg", "asian"]
+  },
+  {
+    "id": 3005,
+    "title": "Speedy Caprese Grilled Cheese",
+    "image": "https://images.unsplash.com/photo-1550507992-eb63ffee0847?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=880&q=80",
+    "time": "6 min",
+    "price": "£3.20",
+    "available": true,
+    "mealType": "Lunch",
+    "rating": 5,
+    "servings": 1,
+    "summary": "Gourmet grilled cheese with mozzarella, tomato, and basil.",
+    "ingredients": [
+      "2 slices sourdough bread",
+      "2 slices fresh mozzarella",
+      "2 slices ripe tomato",
+      "4-5 fresh basil leaves",
+      "1 tbsp butter",
+      "1 tsp balsamic glaze",
+      "Salt and pepper"
+    ],
+    "instructions": [
+      "Butter one side of each bread slice.",
+      "Place one slice butter-side down in a cold pan.",
+      "Layer with mozzarella, tomato, basil, salt, and pepper.",
+      "Drizzle with balsamic glaze.",
+      "Top with second bread slice, butter-side up.",
+      "Cook over medium heat for 3 minutes until golden.",
+      "Flip and cook another 2-3 minutes until cheese melts.",
+      "Slice and serve immediately."
+    ],
+    "tags": ["grilled-cheese", "caprese", "quick", "italian", "comfort"]
+  }
+] 

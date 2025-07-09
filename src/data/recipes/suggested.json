@@ -1,0 +1,166 @@
+[
+  {
+    "id": 1001,
+    "title": "10-Minute Veggie Pasta",
+    "image": "https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=880&q=80",
+    "time": "10 min",
+    "price": "£3.20",
+    "available": true,
+    "mealType": "Dinner",
+    "rating": 4,
+    "servings": 2,
+    "summary": "A quick and healthy vegetarian pasta dish with fresh vegetables.",
+    "ingredients": [
+      "200g whole wheat pasta",
+      "1 courgette, sliced",
+      "1 bell pepper, chopped",
+      "200g cherry tomatoes, halved",
+      "2 cloves garlic, minced",
+      "3 tbsp olive oil",
+      "2 tbsp fresh basil, chopped",
+      "50g parmesan cheese, grated",
+      "Salt and pepper to taste"
+    ],
+    "instructions": [
+      "Cook pasta according to package instructions until al dente.",
+      "Heat olive oil in a large pan over medium heat.",
+      "Add garlic and cook for 1 minute until fragrant.",
+      "Add courgette and bell pepper, cook for 3-4 minutes.",
+      "Add cherry tomatoes and cook for 2 minutes until softened.",
+      "Drain pasta and add to the pan with vegetables.",
+      "Toss everything together and season with salt and pepper.",
+      "Serve hot topped with fresh basil and parmesan cheese."
+    ],
+    "tags": ["vegetarian", "quick", "healthy", "pasta", "italian"]
+  },
+  {
+    "id": 1002,
+    "title": "Avocado Toast with Poached Eggs",
+    "image": "https://images.unsplash.com/photo-1588137378633-dea1336ce1e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=880&q=80",
+    "time": "5 min",
+    "price": "£2.50",
+    "available": true,
+    "mealType": "Breakfast",
+    "rating": 5,
+    "servings": 1,
+    "summary": "Perfect breakfast with creamy avocado and protein-rich eggs.",
+    "ingredients": [
+      "2 slices sourdough bread",
+      "1 ripe avocado",
+      "2 fresh eggs",
+      "1 tbsp white vinegar",
+      "1 tsp lime juice",
+      "Salt and black pepper",
+      "Red pepper flakes (optional)",
+      "Fresh chives, chopped"
+    ],
+    "instructions": [
+      "Toast the sourdough bread until golden brown.",
+      "Bring a pot of water to a gentle simmer and add vinegar.",
+      "Crack eggs into separate bowls, then gently lower into simmering water.",
+      "Cook eggs for 3-4 minutes for runny yolks.",
+      "Meanwhile, mash avocado with lime juice, salt, and pepper.",
+      "Spread avocado mixture on toast.",
+      "Carefully remove poached eggs with a slotted spoon.",
+      "Place eggs on top of avocado toast and garnish with chives and red pepper flakes."
+    ],
+    "tags": ["breakfast", "healthy", "protein", "avocado", "eggs"]
+  },
+  {
+    "id": 1003,
+    "title": "Mediterranean Quinoa Bowl",
+    "image": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=880&q=80",
+    "time": "15 min",
+    "price": "£4.10",
+    "available": true,
+    "mealType": "Lunch",
+    "rating": 4,
+    "servings": 2,
+    "summary": "Healthy Mediterranean-inspired quinoa bowl with fresh vegetables.",
+    "ingredients": [
+      "1 cup quinoa",
+      "200g cucumber, diced",
+      "200g cherry tomatoes, halved",
+      "100g feta cheese, crumbled",
+      "50g Kalamata olives, pitted",
+      "1/4 red onion, thinly sliced",
+      "3 tbsp olive oil",
+      "2 tbsp lemon juice",
+      "1 tsp dried oregano",
+      "Salt and pepper to taste"
+    ],
+    "instructions": [
+      "Cook quinoa according to package instructions, then let cool.",
+      "In a large bowl, combine cucumber, cherry tomatoes, and red onion.",
+      "Add cooled quinoa to the bowl.",
+      "Whisk together olive oil, lemon juice, oregano, salt, and pepper.",
+      "Pour dressing over quinoa mixture and toss well.",
+      "Top with crumbled feta cheese and olives.",
+      "Let sit for 5 minutes to allow flavors to meld.",
+      "Serve chilled or at room temperature."
+    ],
+    "tags": ["mediterranean", "healthy", "quinoa", "vegetarian", "gluten-free"]
+  },
+  {
+    "id": 1004,
+    "title": "Green Smoothie Bowl",
+    "image": "https://images.unsplash.com/photo-1590301157890-4810ed352733?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=880&q=80",
+    "time": "7 min",
+    "price": "£3.50",
+    "available": true,
+    "mealType": "Breakfast",
+    "rating": 4,
+    "servings": 1,
+    "summary": "Nutrient-packed smoothie bowl with fresh fruits and vegetables.",
+    "ingredients": [
+      "1 frozen banana",
+      "1 cup fresh spinach",
+      "1/2 avocado",
+      "200ml coconut milk",
+      "1 tbsp chia seeds",
+      "1 tsp honey",
+      "Fresh berries for topping",
+      "Granola for topping",
+      "Coconut flakes for topping"
+    ],
+    "instructions": [
+      "Add frozen banana, spinach, avocado, and coconut milk to a blender.",
+      "Blend until smooth and creamy.",
+      "Add chia seeds and honey, blend briefly to combine.",
+      "Pour into a bowl.",
+      "Top with fresh berries, granola, and coconut flakes.",
+      "Serve immediately for best texture."
+    ],
+    "tags": ["smoothie", "healthy", "breakfast", "vegan", "gluten-free"]
+  },
+  {
+    "id": 1005,
+    "title": "Classic Caprese Salad",
+    "image": "https://images.unsplash.com/photo-1540420773420-3366772f4999?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=880&q=80",
+    "time": "8 min",
+    "price": "£3.80",
+    "available": true,
+    "mealType": "Lunch",
+    "rating": 5,
+    "servings": 2,
+    "summary": "Classic Italian salad with fresh mozzarella, tomatoes, and basil.",
+    "ingredients": [
+      "3 large ripe tomatoes, sliced",
+      "250g fresh mozzarella, sliced",
+      "Fresh basil leaves",
+      "3 tbsp extra virgin olive oil",
+      "2 tbsp balsamic vinegar",
+      "Sea salt",
+      "Freshly ground black pepper"
+    ],
+    "instructions": [
+      "Arrange tomato and mozzarella slices alternately on a serving plate.",
+      "Tuck fresh basil leaves between the slices.",
+      "Drizzle with olive oil and balsamic vinegar.",
+      "Season with sea salt and freshly ground black pepper.",
+      "Let sit for 5 minutes to allow flavors to develop.",
+      "Serve at room temperature."
+    ],
+    "tags": ["italian", "salad", "fresh", "vegetarian", "summer"]
+  }
+] 
