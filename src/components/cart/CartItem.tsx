@@ -1,5 +1,5 @@
-import React from 'react';
-import { Trash2, Edit3 } from 'lucide-react';
+import React, { useState } from 'react';
+import { Trash2, Edit3, ChevronDown, ChevronUp } from 'lucide-react';
 import type { CartItem as CartItemType } from '../../data/mockCartData';
 
 interface CartItemProps {
@@ -9,6 +9,8 @@ interface CartItemProps {
 }
 
 export function CartItem({ item, onQuantityChange, onRemove }: CartItemProps) {
+  const [showIngredients, setShowIngredients] = useState(false);
+
   const formatPrice = (price?: number) => {
     if (price === undefined) return 'Price unavailable';
     return `£${price.toFixed(2)}`;
@@ -23,6 +25,57 @@ export function CartItem({ item, onQuantityChange, onRemove }: CartItemProps) {
       aldi: 'bg-blue-50 text-blue-700 border-blue-200'
     };
     return colorMap[storeId] || 'bg-gray-50 text-gray-700 border-gray-200';
+  };
+
+  // Mock ingredients data for demonstration
+  const getIngredients = (recipeName: string) => {
+    const ingredientsMap: Record<string, string[]> = {
+      'Greek Yogurt Protein Bowl': [
+        '200g Greek yogurt (0% fat)',
+        '1 scoop vanilla protein powder',
+        '2 tbsp granola',
+        '100g mixed berries',
+        '1 tbsp almond butter',
+        '1 tbsp chia seeds',
+        '1 tsp honey',
+        '2 tbsp crushed almonds'
+      ],
+      'Turkey Meatballs & Veg': [
+        '500g lean ground turkey',
+        '1 egg',
+        '1/4 cup breadcrumbs',
+        '2 cloves garlic, minced',
+        '1 onion, finely diced',
+        '200g green beans, trimmed',
+        '1 cup brown rice, cooked',
+        '2 tbsp olive oil',
+        '1 tsp Italian seasoning',
+        'Salt and pepper'
+      ],
+      'Lentil & Sweet Potato Curry': [
+        '1 cup red lentils',
+        '2 sweet potatoes, cubed',
+        '1 onion, diced',
+        '2 cloves garlic, minced',
+        '1 tbsp curry powder',
+        '400ml coconut milk',
+        '2 tbsp olive oil',
+        '1 tsp turmeric',
+        'Salt and pepper',
+        'Fresh cilantro'
+      ],
+      'Cauliflower Buffalo Bites': [
+        '1 head cauliflower, cut into florets',
+        '1/2 cup flour',
+        '1/2 cup water',
+        '1 tsp garlic powder',
+        '1/2 cup buffalo sauce',
+        '2 tbsp olive oil',
+        'Salt and pepper',
+        'Green onions for garnish'
+      ]
+    };
+    return ingredientsMap[recipeName] || ['Ingredients not available'];
   };
 
   return (
@@ -43,11 +96,39 @@ export function CartItem({ item, onQuantityChange, onRemove }: CartItemProps) {
             {item.store.name}
           </span>
           {!item.available && (
-            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-50 text-red-700 border border-red-200">
-              Unavailable
-            </span>
+            <button
+              onClick={() => setShowIngredients(!showIngredients)}
+              className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-orange-50 text-orange-700 border border-orange-200 hover:bg-orange-100 transition-colors"
+            >
+              Ingredients
+              {showIngredients ? (
+                <ChevronUp size={12} className="ml-1" />
+              ) : (
+                <ChevronDown size={12} className="ml-1" />
+              )}
+            </button>
           )}
         </div>
+
+        {/* Ingredients Dropdown */}
+        {!item.available && showIngredients && (
+          <div className="mb-3 p-3 bg-gray-50 rounded-lg border">
+            <h5 className="text-xs font-semibold text-gray-700 mb-2">Recipe Ingredients:</h5>
+            <ul className="text-xs text-gray-600 space-y-1">
+              {getIngredients(item.recipeName).map((ingredient, index) => (
+                <li key={index} className="flex items-center">
+                  <span className="w-1 h-1 bg-gray-400 rounded-full mr-2 flex-shrink-0"></span>
+                  {ingredient}
+                </li>
+              ))}
+            </ul>
+            <div className="mt-2 pt-2 border-t border-gray-200">
+              <p className="text-xs text-gray-500">
+                {item.price ? `Price: £${item.price.toFixed(2)}` : 'No price data available'}
+              </p>
+            </div>
+          </div>
+        )}
 
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
