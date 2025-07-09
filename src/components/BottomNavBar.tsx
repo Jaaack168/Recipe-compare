@@ -5,7 +5,7 @@ import { useCart } from '../contexts/CartContext';
 
 export function BottomNavBar() {
   const location = useLocation();
-  const { getTotalItems } = useCart();
+  const { getTotalItems, setCartOpen } = useCart();
   const totalItems = getTotalItems();
 
   const isActive = (path: string) => location.pathname === path;
@@ -37,13 +37,9 @@ export function BottomNavBar() {
           <span>Recipes</span>
         </Link>
         
-        <Link 
-          to="/cart" 
-          className={`relative flex flex-col items-center px-4 py-2 text-xs ${
-            isActive('/cart') 
-              ? 'text-[#6DBE45]' 
-              : 'text-gray-600 dark:text-dark-soft-text-muted hover:text-gray-800 dark:hover:text-dark-soft-text'
-          }`}
+        <button 
+          onClick={() => setCartOpen(true)}
+          className="relative flex flex-col items-center px-4 py-2 text-xs text-gray-600 dark:text-dark-soft-text-muted hover:text-gray-800 dark:hover:text-dark-soft-text"
         >
           <div className="relative">
             <ShoppingCart size={20} className="mb-1" />
@@ -54,7 +50,7 @@ export function BottomNavBar() {
             )}
           </div>
           <span>Cart</span>
-        </Link>
+        </button>
         
         <Link 
           to="/account" 
