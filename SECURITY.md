@@ -117,7 +117,7 @@ npm audit fix
 If you discover a security vulnerability, please:
 
 1. **DO NOT** open a public issue
-2. Email security concerns to: [your-email@domain.com]
+2. Email security concerns to: will.jow905@gmail.com
 3. Include steps to reproduce
 4. Provide impact assessment
 
