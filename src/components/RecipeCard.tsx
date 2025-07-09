@@ -11,6 +11,13 @@ interface Recipe {
   price: string;
   available?: boolean;
   mealType?: string;
+  ingredients?: string[] | Array<{
+    id: number;
+    name: string;
+    amount: string;
+    essential?: boolean;
+  }>; // Allow both string arrays and formatted ingredient objects
+  extendedIngredients?: any[]; // For Spoonacular API compatibility
 }
 
 interface RecipeCardProps {
@@ -90,6 +97,48 @@ export function RecipeCard({
     } finally {
       setIsAddingToCart(false);
     }
+  };
+
+  // Helper function to get ingredient preview (first 3 ingredients)
+  const getIngredientPreview = () => {
+    if (!recipe.ingredients || recipe.ingredients.length === 0) {
+      return null;
+    }
+    
+    const maxPreview = 3;
+    const ingredientsToShow = recipe.ingredients.slice(0, maxPreview);
+    const hasMore = recipe.ingredients.length > maxPreview;
+    
+    return (
+      <div className="text-xs text-gray-500 dark:text-dark-soft-text-muted mb-2 line-clamp-2">
+        <span className="font-medium text-gray-600 dark:text-dark-soft-text">Ingredients: </span>
+        {ingredientsToShow.map((ingredient, index) => {
+          let name: string;
+          
+          // Handle both string and object formats
+          if (typeof ingredient === 'string') {
+            // Extract just the ingredient name (remove measurements)
+            const parts = ingredient.split(/\d+/);
+            name = parts[parts.length - 1]
+              .replace(/^[\s,.-]+/, '') // Remove leading whitespace, commas, dots, dashes
+              .replace(/,.*$/, '') // Remove everything after first comma
+              .trim();
+            name = name || ingredient;
+          } else {
+            // It's an object with name property
+            name = ingredient.name;
+          }
+          
+          return (
+            <span key={index}>
+              {name}
+              {index < ingredientsToShow.length - 1 && ', '}
+            </span>
+          );
+        })}
+        {hasMore && <span className="text-gray-400">... +{recipe.ingredients.length - maxPreview} more</span>}
+      </div>
+    );
   };
 
   // Responsive width classes based on variant
@@ -220,6 +269,8 @@ export function RecipeCard({
             {recipe.title}
           </h3>
           
+          {getIngredientPreview()}
+
           <div className="flex items-center text-xs text-gray-500 dark:text-dark-soft-text-muted mb-3">
             <Clock size={12} className="mr-1 flex-shrink-0" />
             <span className="truncate">{recipe.time}</span>

@@ -105,14 +105,10 @@ export function BreakdownModal({
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div>
+                <div className="text-sm">
+                  <div className="flex justify-between">
                     <div className="text-gray-600">Subtotal</div>
                     <div className="font-medium">£{breakdown.subtotal.toFixed(2)}</div>
-                  </div>
-                  <div>
-                    <div className="text-gray-600">Delivery</div>
-                    <div className="font-medium">£{breakdown.deliveryFee.toFixed(2)}</div>
                   </div>
                 </div>
 

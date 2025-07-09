@@ -1,59 +1,85 @@
 import React from 'react';
-import { ArrowRight, BarChart3, FileText } from 'lucide-react';
-import { STORES } from '../../data/mockCartData';
+import { ArrowRight, BarChart3, FileText, Zap } from 'lucide-react';
+import { STORES, ShoppingMode, StoreFilter } from '../../data/mockCartData';
+import { PriceCalculator } from '../../utils/priceCalculator';
 
 interface CartSummaryProps {
-  subtotal: number;
-  delivery: number;
-  total: number;
   onBreakdownClick: () => void;
   onCheckoutClick: () => void;
   onSwitchToCheapest: () => void;
-  selectedStore?: string;
+  selectedStore: StoreFilter;
   cheapestStore?: string;
+  shoppingMode: ShoppingMode;
+  cartItems: Array<{ recipeName: string; quantity: number }>;
 }
 
 export function CartSummary({
-  subtotal,
-  delivery,
-  total,
   onBreakdownClick,
   onCheckoutClick,
   onSwitchToCheapest,
   selectedStore,
-  cheapestStore
+  cheapestStore,
+  shoppingMode,
+  cartItems
 }: CartSummaryProps) {
-  // Check if we're already on the cheapest store
-  const isOnCheapestStore = selectedStore === cheapestStore || selectedStore === 'all';
+  // Calculate subtotal (without loyalty savings)
+  const subtotal = PriceCalculator.calculateTotal(cartItems, {
+    selectedStore,
+    shoppingMode,
+    applyLoyalty: false
+  });
+
+  // Calculate total (with loyalty savings)
+  const total = PriceCalculator.calculateTotal(cartItems, {
+    selectedStore,
+    shoppingMode,
+    applyLoyalty: true
+  });
+
+  // Calculate savings vs most expensive store
+  const mostExpensiveTotal = PriceCalculator.getMostExpensiveStoreTotal(cartItems);
+  const savings = mostExpensiveTotal - total;
   
-  // Get the loyalty program name for the selected store
-  const getDeliveryLabel = () => {
-    if (selectedStore === 'all') {
-      return 'Delivery';
-    }
-    const store = STORES.find(s => s.id === selectedStore);
-    return store?.loyaltyProgram || 'Delivery';
-  };
+  // Check if we're already on the cheapest store or in Smart Cart mode
+  const isOnCheapestStore = selectedStore === cheapestStore || selectedStore === 'all' || shoppingMode === 'smart-cart';
+  
+  // Get the loyalty scheme name for the selected store
+  const loyaltySchemeName = PriceCalculator.getLoyaltySchemeName(selectedStore);
   
   return (
     <div className="bg-white rounded-lg border border-gray-200 p-6 sticky top-4">
       <h3 className="text-lg font-semibold text-gray-900 mb-4">Order Summary</h3>
       
       <div className="space-y-3 mb-6">
+        {/* Line 1: Subtotal without loyalty */}
         <div className="flex justify-between text-sm">
-          <span className="text-gray-600">Subtotal</span>
+          <span className="text-gray-600">
+            Subtotal {loyaltySchemeName && selectedStore !== 'all' ? `(without ${loyaltySchemeName})` : ''}
+          </span>
           <span className="font-medium">£{subtotal.toFixed(2)}</span>
         </div>
-        <div className="flex justify-between text-sm">
-          <span className="text-gray-600">{getDeliveryLabel()}</span>
-          <span className="font-medium">£{delivery.toFixed(2)}</span>
-        </div>
+        
+        {/* Line 2: Total with loyalty (only show if different from subtotal) */}
+        {loyaltySchemeName && selectedStore !== 'all' && total !== subtotal && (
+          <div className="flex justify-between text-sm">
+            <span className="text-gray-600">Total (with {loyaltySchemeName})</span>
+            <span className="font-medium">£{total.toFixed(2)}</span>
+          </div>
+        )}
+        
+        {/* Line 3 & 4: Savings display */}
         <div className="border-t border-gray-200 pt-3">
           <div className="flex justify-between font-semibold text-lg text-green-600">
-            <span>Your Savings</span>
-            <span>£8.50</span>
+            <span className="flex items-center">
+              {shoppingMode === 'smart-cart' && <Zap size={16} className="mr-1" />}
+              You're saving
+            </span>
+            <span>£{savings.toFixed(2)}</span>
           </div>
-          <p className="text-xs text-gray-500 mt-1">vs. shopping at most expensive store</p>
+          <p className="text-xs text-gray-500 mt-1">
+            vs. shopping at most expensive store
+            {shoppingMode === 'smart-cart' && ' (Smart Cart active)'}
+          </p>
         </div>
       </div>
 
@@ -67,8 +93,17 @@ export function CartSummary({
               : 'border-gray-300 text-gray-700 bg-white hover:bg-gray-50'
           }`}
         >
-          <ArrowRight size={16} className="mr-2" />
-          {isOnCheapestStore ? 'Already on Cheapest Store' : 'Switch to Cheapest Store'}
+          {shoppingMode === 'smart-cart' ? (
+            <>
+              <Zap size={16} className="mr-2" />
+              Smart Cart Active
+            </>
+          ) : (
+            <>
+              <ArrowRight size={16} className="mr-2" />
+              {isOnCheapestStore ? 'Already on Cheapest Store' : 'Switch to Cheapest Store'}
+            </>
+          )}
         </button>
 
         <button

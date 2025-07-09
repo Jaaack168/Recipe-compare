@@ -1,19 +1,32 @@
 import React, { useState } from 'react';
 import { Trash2, Edit3, ChevronDown, ChevronUp } from 'lucide-react';
-import type { CartItem as CartItemType } from '../../data/mockCartData';
+import type { CartItem as CartItemType, StoreFilter, ShoppingMode } from '../../data/mockCartData';
+import { PriceCalculator } from '../../utils/priceCalculator';
 
 interface CartItemProps {
   item: CartItemType;
   onQuantityChange: (id: string, quantity: number) => void;
   onRemove: (id: string) => void;
+  selectedStore: StoreFilter;
+  shoppingMode: ShoppingMode;
 }
 
-export function CartItem({ item, onQuantityChange, onRemove }: CartItemProps) {
+export function CartItem({ item, onQuantityChange, onRemove, selectedStore, shoppingMode }: CartItemProps) {
   const [showIngredients, setShowIngredients] = useState(false);
 
-  const formatPrice = (price?: number) => {
-    if (price === undefined) return 'Price unavailable';
-    return `£${price.toFixed(2)}`;
+  const formatPrice = () => {
+    // Calculate price using the recipe name and cart settings
+    const calculatedPrice = PriceCalculator.calculateRecipePrice(item.recipeName, {
+      selectedStore,
+      shoppingMode,
+      quantity: item.quantity
+    });
+    
+    if (calculatedPrice === 0) {
+      return 'Price unavailable';
+    }
+    
+    return `£${calculatedPrice.toFixed(2)}`;
   };
 
   const getStoreColor = (storeId: string) => {
@@ -29,52 +42,52 @@ export function CartItem({ item, onQuantityChange, onRemove }: CartItemProps) {
     return colorMap[storeId] || 'bg-gray-50 text-gray-700 border-gray-200';
   };
 
-  // Mock ingredients data for demonstration
+  // Simplified ingredients list without pricing data
   const getIngredients = (recipeName: string) => {
     const ingredientsMap: Record<string, string[]> = {
       'Greek Yogurt Protein Bowl': [
-        '200g Greek yogurt (0% fat) - Tesco £1.20, Asda £1.15, Waitrose £1.45, M&S £1.60',
-        '1 scoop vanilla protein powder - Tesco £8.50, Asda £8.20, Waitrose £12.00, M&S £11.50',
-        '2 tbsp granola - Tesco £2.10, Asda £1.95, Waitrose £3.20, M&S £2.95',
-        '100g mixed berries - Tesco £2.50, Asda £2.30, Waitrose £3.80, M&S £3.50',
-        '1 tbsp almond butter - Tesco £3.20, Asda £3.00, Waitrose £4.50, M&S £4.25',
-        '1 tbsp chia seeds - Tesco £2.80, Asda £2.60, Waitrose £3.95, M&S £3.70',
-        '1 tsp honey - Tesco £2.40, Asda £2.20, Waitrose £4.80, M&S £4.50',
-        '2 tbsp crushed almonds - Tesco £3.50, Asda £3.20, Waitrose £5.20, M&S £4.95'
+        'Greek yogurt (0% fat)',
+        'Vanilla protein powder',
+        'Granola',
+        'Mixed berries',
+        'Almond butter',
+        'Chia seeds',
+        'Honey',
+        'Crushed almonds'
       ],
       'Turkey Meatballs & Veg': [
-        '500g lean ground turkey - Tesco £5.50, Asda £5.20, Waitrose £8.50, M&S £8.00',
-        '1 egg - Tesco £2.50, Asda £2.30, Waitrose £3.80, M&S £3.50',
-        '1/4 cup breadcrumbs - Tesco £1.20, Asda £1.10, Waitrose £1.85, M&S £1.70',
-        '2 cloves garlic, minced - Tesco £0.80, Asda £0.75, Waitrose £1.20, M&S £1.10',
-        '1 onion, finely diced - Tesco £1.00, Asda £0.90, Waitrose £1.50, M&S £1.40',
-        '200g green beans, trimmed - Tesco £1.80, Asda £1.60, Waitrose £2.80, M&S £2.50',
-        '1 cup brown rice, cooked - Tesco £2.00, Asda £1.85, Waitrose £3.20, M&S £2.95',
-        '2 tbsp olive oil - Tesco £3.00, Asda £2.80, Waitrose £5.50, M&S £5.00',
-        '1 tsp Italian seasoning - Tesco £1.50, Asda £1.40, Waitrose £2.40, M&S £2.20',
-        'Salt and pepper - Tesco £0.80, Asda £0.75, Waitrose £1.20, M&S £1.10'
+        'Lean ground turkey',
+        'Egg',
+        'Breadcrumbs',
+        'Garlic, minced',
+        'Onion, finely diced',
+        'Green beans, trimmed',
+        'Brown rice',
+        'Olive oil',
+        'Italian seasoning',
+        'Salt and pepper'
       ],
       'Lentil & Sweet Potato Curry': [
-        '1 cup red lentils - Tesco £1.50, Asda £1.35, Waitrose £2.40, M&S £2.20',
-        '2 sweet potatoes, cubed - Tesco £1.80, Asda £1.60, Waitrose £2.80, M&S £2.50',
-        '1 onion, diced - Tesco £1.00, Asda £0.90, Waitrose £1.50, M&S £1.40',
-        '2 cloves garlic, minced - Tesco £0.80, Asda £0.75, Waitrose £1.20, M&S £1.10',
-        '1 tbsp curry powder - Tesco £2.20, Asda £2.00, Waitrose £3.80, M&S £3.50',
-        '400ml coconut milk - Tesco £1.80, Asda £1.65, Waitrose £2.95, M&S £2.70',
-        '2 tbsp olive oil - Tesco £3.00, Asda £2.80, Waitrose £5.50, M&S £5.00',
-        '1 tsp turmeric - Tesco £1.80, Asda £1.65, Waitrose £2.95, M&S £2.70',
-        'Salt and pepper - Tesco £0.80, Asda £0.75, Waitrose £1.20, M&S £1.10',
-        'Fresh cilantro - Tesco £1.20, Asda £1.10, Waitrose £1.85, M&S £1.70'
+        'Red lentils',
+        'Sweet potatoes, cubed',
+        'Onion, diced',
+        'Garlic, minced',
+        'Curry powder',
+        'Coconut milk',
+        'Olive oil',
+        'Turmeric',
+        'Salt and pepper',
+        'Fresh cilantro'
       ],
       'Cauliflower Buffalo Bites': [
-        '1 head cauliflower, cut into florets - Tesco £1.50, Asda £1.35, Waitrose £2.40, M&S £2.20',
-        '1/2 cup flour - Tesco £1.00, Asda £0.90, Waitrose £1.50, M&S £1.40',
-        '1/2 cup water - Free from tap',
-        '1 tsp garlic powder - Tesco £1.80, Asda £1.65, Waitrose £2.95, M&S £2.70',
-        '1/2 cup buffalo sauce - Tesco £2.50, Asda £2.30, Waitrose £4.20, M&S £3.80',
-        '2 tbsp olive oil - Tesco £3.00, Asda £2.80, Waitrose £5.50, M&S £5.00',
-        'Salt and pepper - Tesco £0.80, Asda £0.75, Waitrose £1.20, M&S £1.10',
-        'Green onions for garnish - Tesco £1.20, Asda £1.10, Waitrose £1.85, M&S £1.70'
+        'Cauliflower, cut into florets',
+        'Flour',
+        'Water',
+        'Garlic powder',
+        'Buffalo sauce',
+        'Olive oil',
+        'Salt and pepper',
+        'Green onions for garnish'
       ]
     };
     return ingredientsMap[recipeName] || ['Ingredients not available'];
@@ -126,7 +139,7 @@ export function CartItem({ item, onQuantityChange, onRemove }: CartItemProps) {
             </ul>
             <div className="mt-2 pt-2 border-t border-gray-200">
               <p className="text-xs text-gray-500">
-                {item.price ? `Price: £${item.price.toFixed(2)}` : 'No price data available'}
+                Recipe total: {formatPrice()}
               </p>
             </div>
           </div>
@@ -158,8 +171,8 @@ export function CartItem({ item, onQuantityChange, onRemove }: CartItemProps) {
           </div>
 
           <div className="text-right">
-            <div className={`font-medium ${item.price ? 'text-gray-900' : 'text-gray-500'}`}>
-              {formatPrice(item.price)}
+            <div className="font-medium text-gray-900">
+              {formatPrice()}
             </div>
           </div>
         </div>

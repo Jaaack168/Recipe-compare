@@ -44,7 +44,7 @@ export interface Recipe {
   available?: boolean;
   mealType?: string;
   extendedIngredients?: any[];
-  ingredients?: Array<{
+  ingredients?: string[] | Array<{
     id: number;
     name: string;
     amount: string;
@@ -89,20 +89,82 @@ const extractIngredientsFromRecipe = (recipe: Recipe): CartIngredient[] => {
     // Fallback to recipe.ingredients if available
     else if (recipe.ingredients && Array.isArray(recipe.ingredients) && recipe.ingredients.length > 0) {
       console.log('Using recipe.ingredients fallback:', recipe.ingredients);
-      ingredients = recipe.ingredients.map((ing) => ({
-        id: ing.id || (recipe.id * 1000 + Math.floor(Math.random() * 1000)),
-        name: ing.name,
-        amount: ing.amount,
-        recipeId: recipe.id,
-        recipeTitle: recipe.title,
-        price: '£0.50',
-        available: true,
-        essential: ing.essential || true,
-        storeAvailability: [
-          { storeId: 'tesco', storeName: 'Tesco', available: true, price: '£0.50', inStock: true },
-          { storeId: 'asda', storeName: 'ASDA', available: true, price: '£0.45', inStock: true }
-        ]
-      }));
+      
+      // Check if ingredients are strings or objects
+      if (typeof recipe.ingredients[0] === 'string') {
+        // Handle string array format
+        ingredients = (recipe.ingredients as string[]).map((ingredient, index) => {
+          // Parse common ingredient patterns like "2 tbsp olive oil" or "1 onion, diced"
+          const parts = ingredient.trim().split(/\s+/);
+          let amount = '';
+          let name = ingredient;
+
+          // Try to extract amount and unit from beginning
+          if (parts.length > 1) {
+            const firstPart = parts[0];
+            const secondPart = parts[1];
+            
+            // Check if first part is a number or fraction
+            if (/^[\d\/\.\-]+$/.test(firstPart)) {
+              // Check if second part is a unit
+              const commonUnits = ['tbsp', 'tsp', 'cup', 'cups', 'oz', 'lb', 'lbs', 'g', 'kg', 'ml', 'l', 'cloves', 'slices', 'can', 'bottle'];
+              if (commonUnits.some(unit => secondPart.toLowerCase().includes(unit))) {
+                amount = `${firstPart} ${secondPart}`;
+                name = parts.slice(2).join(' ');
+              } else {
+                amount = firstPart;
+                name = parts.slice(1).join(' ');
+              }
+            }
+          }
+
+          // Clean up name - remove commas and extra descriptors
+          name = name.replace(/^,\s*/, '').replace(/,.*$/, '').trim();
+          
+          // If we couldn't extract amount, use the original as name
+          if (!name) {
+            name = ingredient;
+            amount = 'As needed';
+          }
+
+          return {
+            id: recipe.id * 1000 + index + 1,
+            name: name || ingredient,
+            amount: amount || 'As needed',
+            recipeId: recipe.id,
+            recipeTitle: recipe.title,
+            price: '£0.50',
+            available: true,
+            essential: true,
+            storeAvailability: [
+              { storeId: 'tesco', storeName: 'Tesco', available: true, price: '£0.50', inStock: true },
+              { storeId: 'asda', storeName: 'ASDA', available: true, price: '£0.45', inStock: true }
+            ]
+          };
+        });
+      } else {
+        // Handle object array format
+        const ingredientObjects = recipe.ingredients as Array<{
+          id: number;
+          name: string;
+          amount: string;
+          essential?: boolean;
+        }>;
+        ingredients = ingredientObjects.map((ing) => ({
+          id: ing.id || (recipe.id * 1000 + Math.floor(Math.random() * 1000)),
+          name: ing.name,
+          amount: ing.amount,
+          recipeId: recipe.id,
+          recipeTitle: recipe.title,
+          price: '£0.50',
+          available: true,
+          essential: ing.essential || true,
+          storeAvailability: [
+            { storeId: 'tesco', storeName: 'Tesco', available: true, price: '£0.50', inStock: true },
+            { storeId: 'asda', storeName: 'ASDA', available: true, price: '£0.45', inStock: true }
+          ]
+        }));
+      }
     }
     // Final fallback - create mock ingredients based on recipe
     else {
@@ -310,7 +372,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   );
 };
 
-export const useCart = (): CartContextType => {
+// Create the hook with proper HMR support
+function useCart(): CartContextType {
   const context = useContext(CartContext);
   if (!context) {
     throw new Error('useCart must be used within a CartProvider');
@@ -460,4 +523,7 @@ export const useCart = (): CartContextType => {
     cartOpen,
     setCartOpen,
   };
-}; 
+}
+
+// Export the hook properly for HMR
+export { useCart }; 

@@ -13,7 +13,6 @@ export interface Store {
   id: string;
   name: string;
   logo?: string;
-  deliveryFee: number;
   loyaltyProgram?: string;
   color: string;
 }
@@ -21,7 +20,6 @@ export interface Store {
 export interface StoreBreakdown {
   store: Store;
   subtotal: number;
-  deliveryFee: number;
   total: number;
   itemsAvailable: number;
   totalItems: number;
@@ -34,7 +32,6 @@ export const STORES: Store[] = [
     id: 'tesco',
     name: 'Tesco',
     logo: '🔵',
-    deliveryFee: 4.99,
     loyaltyProgram: 'Clubcard',
     color: 'blue'
   },
@@ -42,7 +39,6 @@ export const STORES: Store[] = [
     id: 'asda',
     name: 'Asda',
     logo: '🟢',
-    deliveryFee: 3.99,
     loyaltyProgram: 'Asda Rewards',
     color: 'green'
   },
@@ -50,7 +46,6 @@ export const STORES: Store[] = [
     id: 'morrisons',
     name: 'Morrisons',
     logo: '🟡',
-    deliveryFee: 4.99,
     loyaltyProgram: 'More Card',
     color: 'yellow'
   },
@@ -58,7 +53,6 @@ export const STORES: Store[] = [
     id: 'sainsburys',
     name: "Sainsbury's",
     logo: '🟠',
-    deliveryFee: 4.99,
     loyaltyProgram: 'Nectar',
     color: 'orange'
   },
@@ -66,7 +60,6 @@ export const STORES: Store[] = [
     id: 'aldi',
     name: 'Aldi',
     logo: '🔷',
-    deliveryFee: 4.99,
     loyaltyProgram: '',
     color: 'blue'
   },
@@ -74,7 +67,6 @@ export const STORES: Store[] = [
     id: 'waitrose',
     name: 'Waitrose',
     logo: '🟫',
-    deliveryFee: 6.99,
     loyaltyProgram: 'myWaitrose',
     color: 'emerald'
   },
@@ -82,7 +74,6 @@ export const STORES: Store[] = [
     id: 'marks-spencer',
     name: 'M&S',
     logo: '🟪',
-    deliveryFee: 5.99,
     loyaltyProgram: 'Sparks',
     color: 'purple'
   }
@@ -135,8 +126,7 @@ export const MOCK_STORE_BREAKDOWN: StoreBreakdown[] = [
   {
     store: STORES[0], // Tesco
     subtotal: 0,
-    deliveryFee: 4.99,
-    total: 4.99,
+    total: 0,
     itemsAvailable: 0,
     totalItems: 4,
     savings: 8.00,
@@ -145,40 +135,35 @@ export const MOCK_STORE_BREAKDOWN: StoreBreakdown[] = [
   {
     store: STORES[1], // Asda  
     subtotal: 0,
-    deliveryFee: 3.99,
-    total: 3.99,
+    total: 0,
     itemsAvailable: 0,
     totalItems: 4
   },
   {
     store: STORES[2], // Morrisons
     subtotal: 0,
-    deliveryFee: 4.99,
-    total: 4.99,
+    total: 0,
     itemsAvailable: 0,
     totalItems: 4
   },
   {
     store: STORES[3], // Sainsbury's
     subtotal: 0,
-    deliveryFee: 4.99,
-    total: 4.99,
+    total: 0,
     itemsAvailable: 0,
     totalItems: 4
   },
   {
     store: STORES[4], // Aldi
     subtotal: 0,
-    deliveryFee: 4.99,
-    total: 4.99,
+    total: 0,
     itemsAvailable: 0,
     totalItems: 4
   },
   {
     store: STORES[5], // Waitrose
     subtotal: 0,
-    deliveryFee: 6.99,
-    total: 6.99,
+    total: 0,
     itemsAvailable: 0,
     totalItems: 4,
     savings: 2.50,
@@ -187,8 +172,7 @@ export const MOCK_STORE_BREAKDOWN: StoreBreakdown[] = [
   {
     store: STORES[6], // M&S
     subtotal: 0,
-    deliveryFee: 5.99,
-    total: 5.99,
+    total: 0,
     itemsAvailable: 0,
     totalItems: 4
   }

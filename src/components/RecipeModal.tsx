@@ -1,16 +1,21 @@
 import React, { useCallback, useEffect, useState, useRef } from 'react';
 import { Clock, X, Heart, Users, DollarSign, ShoppingCart, ChefHat, Check, ChevronRight, ChevronLeft, Star, Timer, Save, Mic, Maximize, ArrowLeft } from 'lucide-react';
+import { useCart } from '../contexts/CartContext';
+import { useToast } from './Toast';
+
 interface RecipeIngredient {
   id: number;
   name: string;
   amount: string;
 }
+
 interface RecipeStep {
   id: number;
   instruction: string;
   hasTimer?: boolean;
   timerMinutes?: number;
 }
+
 interface Recipe {
   id: number;
   title: string;
@@ -19,7 +24,7 @@ interface Recipe {
   price: string;
   servings?: string;
   available?: boolean;
-  ingredients?: RecipeIngredient[];
+  ingredients?: string[] | RecipeIngredient[]; // Allow both formats
   steps?: RecipeStep[];
   rating?: number;
   nutrition?: {
@@ -30,6 +35,7 @@ interface Recipe {
     fiber: string;
   };
 }
+
 interface RecipeModalProps {
   recipe: Recipe;
   isOpen: boolean;
@@ -37,6 +43,7 @@ interface RecipeModalProps {
   isFavorited: boolean;
   onFavoriteToggle: () => void;
 }
+
 export function RecipeModal({
   recipe,
   isOpen,
@@ -56,42 +63,105 @@ export function RecipeModal({
     [key: number]: number;
   }>({});
   const [imageError, setImageError] = useState(false);
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const [showAddedFeedback, setShowAddedFeedback] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
   const lightboxRef = useRef<HTMLDivElement>(null);
-  // Mock data for ingredients and steps if not provided
-  const ingredients = recipe.ingredients || [{
-    id: 1,
-    name: 'Pasta',
-    amount: '100g'
-  }, {
-    id: 2,
-    name: 'Cherry Tomatoes',
-    amount: '200g'
-  }, {
-    id: 3,
-    name: 'Olive Oil',
-    amount: '2 tbsp'
-  }, {
-    id: 4,
-    name: 'Garlic',
-    amount: '2 cloves'
-  }, {
-    id: 5,
-    name: 'Fresh Basil',
-    amount: 'handful'
-  }, {
-    id: 6,
-    name: 'Parmesan Cheese',
-    amount: '30g'
-  }, {
-    id: 7,
-    name: 'Salt',
-    amount: 'to taste'
-  }, {
-    id: 8,
-    name: 'Black Pepper',
-    amount: 'to taste'
-  }];
+  
+  // Get cart functionality and toast
+  const { addRecipe } = useCart();
+  const { showToast } = useToast();
+
+  // Helper function to convert recipe ingredients to proper format
+  const convertIngredients = useCallback((recipeIngredients?: string[] | RecipeIngredient[]): RecipeIngredient[] => {
+    if (!recipeIngredients || recipeIngredients.length === 0) {
+      // Fallback mock ingredients if none provided
+      return [{
+        id: 1,
+        name: 'Pasta',
+        amount: '100g'
+      }, {
+        id: 2,
+        name: 'Cherry Tomatoes',
+        amount: '200g'
+      }, {
+        id: 3,
+        name: 'Olive Oil',
+        amount: '2 tbsp'
+      }, {
+        id: 4,
+        name: 'Garlic',
+        amount: '2 cloves'
+      }, {
+        id: 5,
+        name: 'Fresh Basil',
+        amount: 'handful'
+      }, {
+        id: 6,
+        name: 'Parmesan Cheese',
+        amount: '30g'
+      }, {
+        id: 7,
+        name: 'Salt',
+        amount: 'to taste'
+      }, {
+        id: 8,
+        name: 'Black Pepper',
+        amount: 'to taste'
+      }];
+    }
+
+    // If already in proper format, return as is
+    if (typeof recipeIngredients[0] === 'object' && 'id' in recipeIngredients[0]) {
+      return recipeIngredients as RecipeIngredient[];
+    }
+
+    // Convert string array to proper ingredient objects
+    return (recipeIngredients as string[]).map((ingredient, index) => {
+      // Parse common ingredient patterns like "2 tbsp olive oil" or "1 onion, diced"
+      const parts = ingredient.trim().split(/\s+/);
+      let amount = '';
+      let name = ingredient;
+
+      // Try to extract amount and unit from beginning
+      if (parts.length > 1) {
+        const firstPart = parts[0];
+        const secondPart = parts[1];
+        
+        // Check if first part is a number or fraction
+        if (/^[\d\/\.\-]+$/.test(firstPart)) {
+          // Check if second part is a unit
+          const commonUnits = ['tbsp', 'tsp', 'cup', 'cups', 'oz', 'lb', 'lbs', 'g', 'kg', 'ml', 'l', 'cloves', 'slices', 'can', 'bottle'];
+          if (commonUnits.some(unit => secondPart.toLowerCase().includes(unit))) {
+            amount = `${firstPart} ${secondPart}`;
+            name = parts.slice(2).join(' ');
+          } else {
+            amount = firstPart;
+            name = parts.slice(1).join(' ');
+          }
+        }
+      }
+
+      // Clean up name - remove commas and extra descriptors
+      name = name.replace(/^,\s*/, '').replace(/,.*$/, '').trim();
+      
+      // If we couldn't extract amount, use the original as name
+      if (!name) {
+        name = ingredient;
+        amount = 'As needed';
+      }
+
+      return {
+        id: recipe.id * 1000 + index + 1, // Generate unique ID based on recipe ID
+        name: name || ingredient,
+        amount: amount || 'As needed'
+      };
+    });
+  }, [recipe.id]);
+
+  // Convert ingredients using the helper function
+  const ingredients = convertIngredients(recipe.ingredients);
+
   // Enhanced steps with timer information
   const steps = recipe.steps || [{
     id: 1,
@@ -251,11 +321,45 @@ export function RecipeModal({
       const newList = [...savedList, ...itemsToSave];
       localStorage.setItem('savedIngredients', JSON.stringify(newList));
       // TODO: Integrate with backend when available
-      // Show confirmation (in a real app, use a toast notification)
-      alert(`${itemsToSave.length} ingredients saved to your shopping list!`);
+      // Show confirmation with toast
+      showToast(`${itemsToSave.length} ingredient${itemsToSave.length !== 1 ? 's' : ''} saved to your shopping list!`, 'success');
     } catch (error) {
       console.error('Error saving ingredients:', error);
-      alert('Could not save ingredients. Please try again.');
+      showToast('Could not save ingredients. Please try again.', 'error');
+    }
+  };
+
+  // Add recipe to cart with selected ingredients
+  const handleAddToCart = async () => {
+    if (isAddingToCart) return;
+    
+    setIsAddingToCart(true);
+    
+    try {
+      // Create a recipe object with the properly formatted ingredients for the cart
+      const recipeForCart = {
+        ...recipe,
+        ingredients: ingredients.filter(ing => selectedIngredients.includes(ing.id))
+      };
+      
+      // Add to cart via context
+      addRecipe(recipeForCart);
+      
+      // Show success feedback
+      setShowAddedFeedback(true);
+      const selectedCount = selectedIngredients.length;
+      showToast(`${selectedCount} ingredient${selectedCount !== 1 ? 's' : ''} from "${recipe.title}" added to cart!`, 'success');
+      
+      // Auto-hide feedback after 2 seconds
+      setTimeout(() => {
+        setShowAddedFeedback(false);
+      }, 2000);
+      
+    } catch (error) {
+      console.error('Error adding recipe to cart:', error);
+      showToast('Could not add recipe to cart. Please try again.', 'error');
+    } finally {
+      setIsAddingToCart(false);
     }
   };
   // Render star rating
@@ -449,14 +553,44 @@ export function RecipeModal({
                 </li>)}
             </ul>
             <div className="flex gap-2 mt-4">
-              <button className="flex-1 flex items-center justify-center bg-[#6DBE45]/10 hover:bg-[#6DBE45]/20 text-[#6DBE45] text-sm font-medium py-2 px-4 rounded-lg transition-colors" disabled={selectedIngredients.length === 0} onMouseEnter={() => setShowTooltip('add-cart')} onMouseLeave={() => setShowTooltip(null)}>
-                <ShoppingCart size={16} className="mr-2" />
-                Add Selected to Cart
-              </button>
-              {showTooltip === 'add-cart' && <div className="absolute z-10 px-2 py-1 text-xs font-medium text-white bg-gray-800 rounded-md shadow-sm whitespace-nowrap">
-                  Add to Cart
-                  <div className="absolute -top-1 left-1/2 w-2 h-2 bg-gray-800 transform rotate-45"></div>
-                </div>}
+              <div className="relative flex-1">
+                <button 
+                  onClick={handleAddToCart}
+                  disabled={selectedIngredients.length === 0 || isAddingToCart}
+                  className={`w-full flex items-center justify-center text-sm font-medium py-2 px-4 rounded-lg transition-colors ${
+                    showAddedFeedback 
+                      ? 'bg-green-50 text-green-600 border border-green-200'
+                      : selectedIngredients.length === 0 
+                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                        : 'bg-[#6DBE45]/10 hover:bg-[#6DBE45]/20 text-[#6DBE45]'
+                  }`}
+                  onMouseEnter={() => !showAddedFeedback && setShowTooltip('add-cart')} 
+                  onMouseLeave={() => setShowTooltip(null)}
+                >
+                  {isAddingToCart ? (
+                    <>
+                      <div className="animate-spin rounded-full h-4 w-4 border-2 border-[#6DBE45] border-t-transparent mr-2"></div>
+                      Adding...
+                    </>
+                  ) : showAddedFeedback ? (
+                    <>
+                      <Check size={16} className="mr-2 text-green-600" />
+                      Added to Cart!
+                    </>
+                  ) : (
+                    <>
+                      <ShoppingCart size={16} className="mr-2" />
+                      Add Selected to Cart
+                    </>
+                  )}
+                </button>
+                {showTooltip === 'add-cart' && !showAddedFeedback && (
+                  <div className="absolute bottom-full mb-1 left-1/2 transform -translate-x-1/2 z-10 px-2 py-1 text-xs font-medium text-white bg-gray-800 rounded-md shadow-sm whitespace-nowrap">
+                    Add {selectedIngredients.length} ingredient{selectedIngredients.length !== 1 ? 's' : ''} to cart
+                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-2 h-2 bg-gray-800 rotate-45"></div>
+                  </div>
+                )}
+              </div>
               <button className="flex-1 flex items-center justify-center bg-white border border-[#6DBE45] text-[#6DBE45] hover:bg-[#6DBE45]/5 text-sm font-medium py-2 px-4 rounded-lg transition-colors" disabled={selectedIngredients.length === 0} onClick={saveIngredientsToList}>
                 <Save size={16} className="mr-2" />
                 Save Ingredients
@@ -517,15 +651,52 @@ export function RecipeModal({
         {/* Sticky footer */}
         <div className="p-4 border-t border-gray-100 bg-white">
           <div className="flex gap-3">
-            <div className="relative">
-              <button className="flex-1 flex items-center justify-center bg-white border border-[#6DBE45] text-[#6DBE45] hover:bg-[#6DBE45]/5 font-medium py-2.5 px-4 rounded-lg transition-colors" onMouseEnter={() => setShowTooltip('cart')} onMouseLeave={() => setShowTooltip(null)}>
-                <ShoppingCart size={18} className="mr-2" />
-                Add to Cart
+            <div className="relative flex-1">
+              <button 
+                onClick={() => {
+                  // If no ingredients are selected, select all first
+                  if (selectedIngredients.length === 0) {
+                    setSelectedIngredients(ingredients.map(ing => ing.id));
+                    // Add a small delay to show the selection, then add to cart
+                    setTimeout(() => {
+                      handleAddToCart();
+                    }, 300);
+                  } else {
+                    handleAddToCart();
+                  }
+                }}
+                disabled={isAddingToCart}
+                className={`w-full flex items-center justify-center font-medium py-2.5 px-4 rounded-lg transition-colors ${
+                  showAddedFeedback 
+                    ? 'bg-green-50 text-green-600 border border-green-200'
+                    : 'bg-white border border-[#6DBE45] text-[#6DBE45] hover:bg-[#6DBE45]/5'
+                }`}
+                onMouseEnter={() => !showAddedFeedback && setShowTooltip('cart')} 
+                onMouseLeave={() => setShowTooltip(null)}
+              >
+                {isAddingToCart ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-2 border-[#6DBE45] border-t-transparent mr-2"></div>
+                    Adding to Cart...
+                  </>
+                ) : showAddedFeedback ? (
+                  <>
+                    <Check size={18} className="mr-2 text-green-600" />
+                    Added to Cart!
+                  </>
+                ) : (
+                  <>
+                    <ShoppingCart size={18} className="mr-2" />
+                    Add to Cart
+                  </>
+                )}
               </button>
-              {showTooltip === 'cart' && <div className="absolute bottom-full mb-1 left-1/2 transform -translate-x-1/2 z-10 px-2 py-1 text-xs font-medium text-white bg-gray-800 rounded-md shadow-sm whitespace-nowrap">
-                  Add to Cart
+              {showTooltip === 'cart' && !showAddedFeedback && (
+                <div className="absolute bottom-full mb-1 left-1/2 transform -translate-x-1/2 z-10 px-2 py-1 text-xs font-medium text-white bg-gray-800 rounded-md shadow-sm whitespace-nowrap">
+                  {selectedIngredients.length === 0 ? 'Add all ingredients to cart' : `Add ${selectedIngredients.length} selected ingredient${selectedIngredients.length !== 1 ? 's' : ''} to cart`}
                   <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-gray-800 rotate-45"></div>
-                </div>}
+                </div>
+              )}
             </div>
             <button className="flex-1 flex items-center justify-center bg-[#6DBE45] hover:bg-[#6DBE45]/90 text-white font-medium py-2.5 px-4 rounded-lg transition-colors" onClick={startCookingMode}>
               <ChefHat size={18} className="mr-2" />

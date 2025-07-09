@@ -5,21 +5,24 @@ import { AccountPage } from './pages/AccountPage';
 import { PostcodeProvider } from './components/PostcodeChecker';
 import { CartProvider } from './contexts/CartContext';
 import { CartDrawer } from './components/CartDrawer';
+import { ToastProvider } from './components/Toast';
 
 export function App() {
   return (
-    <PostcodeProvider>
-      <CartProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/recipes" element={<RecipesPage />} />
-            <Route path="/account" element={<AccountPage />} />
-          </Routes>
-          {/* Cart Drawer - renders conditionally based on cartOpen state */}
-          <CartDrawer />
-        </BrowserRouter>
-      </CartProvider>
-    </PostcodeProvider>
+    <ToastProvider>
+      <PostcodeProvider>
+        <CartProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/recipes" element={<RecipesPage />} />
+              <Route path="/account" element={<AccountPage />} />
+            </Routes>
+            {/* Cart Drawer - renders conditionally based on cartOpen state */}
+            <CartDrawer />
+          </BrowserRouter>
+        </CartProvider>
+      </PostcodeProvider>
+    </ToastProvider>
   );
 }

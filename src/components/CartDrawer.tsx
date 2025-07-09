@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MapPin, ChevronDown, X } from 'lucide-react';
+import { ChevronDown, X } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { 
   StoreToggle,
@@ -16,10 +16,10 @@ import {
   type ShoppingMode,
   type SortOption 
 } from '../data/mockCartData';
+import { PriceCalculator } from '../utils/priceCalculator';
 
 export function CartDrawer() {
   const { cartOpen, setCartOpen } = useCart();
-  const [postcode, setPostcode] = useState('');
   const [selectedStore, setSelectedStore] = useState<StoreFilter>('all');
   const [shoppingMode, setShoppingMode] = useState<ShoppingMode>('single-store');
   const [sortOption, setSortOption] = useState<SortOption>('lowest-price');
@@ -44,21 +44,7 @@ export function CartDrawer() {
     setCartItems(items => items.filter(item => item.id !== id));
   };
 
-  const handleCheckPostcode = () => {
-    console.log('Checking postcode:', postcode);
-  };
 
-  const calculateTotals = () => {
-    const subtotal = cartItems.reduce((sum, item) => 
-      sum + (item.price || 0) * item.quantity, 0
-    );
-    const delivery = 4.99;
-    const total = subtotal + delivery;
-    
-    return { subtotal, delivery, total };
-  };
-
-  const { subtotal, delivery, total } = calculateTotals();
 
   const groupedItems = cartItems.reduce((groups, item) => {
     const key = item.recipeName;
@@ -92,30 +78,7 @@ export function CartDrawer() {
           </button>
         </div>
 
-        {/* Delivery Location */}
-        <div className="px-4 py-4 border-b border-gray-100">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Delivery Location
-          </label>
-          <div className="flex gap-2">
-            <div className="relative flex-1">
-              <MapPin size={16} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              <input
-                type="text"
-                value={postcode}
-                onChange={(e) => setPostcode(e.target.value)}
-                placeholder="Enter postcode"
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm"
-              />
-            </div>
-            <button
-              onClick={handleCheckPostcode}
-              className="px-4 py-2 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors text-sm"
-            >
-              Check
-            </button>
-          </div>
-        </div>
+
 
         {/* Cart Content */}
         <div className="px-4 py-4 space-y-4">
@@ -168,6 +131,8 @@ export function CartDrawer() {
                       item={item}
                       onQuantityChange={handleQuantityChange}
                       onRemove={handleRemoveItem}
+                      selectedStore={selectedStore}
+                      shoppingMode={shoppingMode}
                     />
                   ))}
                 </div>
@@ -189,9 +154,6 @@ export function CartDrawer() {
           {cartItems.length > 0 && (
             <div className="mt-6">
               <CartSummary
-                subtotal={subtotal}
-                delivery={delivery}
-                total={total}
                 onBreakdownClick={() => setIsBreakdownModalOpen(true)}
                 onCheckoutClick={() => console.log('Proceeding to checkout')}
                 onSwitchToCheapest={() => console.log('Switching to cheapest store')}
@@ -199,6 +161,11 @@ export function CartDrawer() {
                 cheapestStore={MOCK_STORE_BREAKDOWN.reduce((cheapest, current) => 
                   current.total < cheapest.total ? current : cheapest
                 ).store.id}
+                shoppingMode={shoppingMode}
+                cartItems={cartItems.map(item => ({ 
+                  recipeName: item.recipeName, 
+                  quantity: item.quantity 
+                }))}
               />
             </div>
           )}
