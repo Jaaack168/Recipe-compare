@@ -16,7 +16,7 @@ export interface Product {
   last_updated: Date;
 }
 
-export type Supermarket = 'tesco' | 'asda' | 'sainsburys' | 'morrisons';
+export type Supermarket = 'tesco' | 'asda' | 'sainsburys' | 'morrisons' | 'aldi' | 'waitrose' | 'marks-spencer';
 
 export interface SupermarketConfig {
   name: string;

@@ -22,7 +22,9 @@ export function CartItem({ item, onQuantityChange, onRemove }: CartItemProps) {
       asda: 'bg-green-50 text-green-700 border-green-200',
       morrisons: 'bg-yellow-50 text-yellow-700 border-yellow-200',
       sainsburys: 'bg-orange-50 text-orange-700 border-orange-200',
-      aldi: 'bg-blue-50 text-blue-700 border-blue-200'
+      aldi: 'bg-blue-50 text-blue-700 border-blue-200',
+      waitrose: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+      'marks-spencer': 'bg-purple-50 text-purple-700 border-purple-200'
     };
     return colorMap[storeId] || 'bg-gray-50 text-gray-700 border-gray-200';
   };
@@ -31,48 +33,48 @@ export function CartItem({ item, onQuantityChange, onRemove }: CartItemProps) {
   const getIngredients = (recipeName: string) => {
     const ingredientsMap: Record<string, string[]> = {
       'Greek Yogurt Protein Bowl': [
-        '200g Greek yogurt (0% fat)',
-        '1 scoop vanilla protein powder',
-        '2 tbsp granola',
-        '100g mixed berries',
-        '1 tbsp almond butter',
-        '1 tbsp chia seeds',
-        '1 tsp honey',
-        '2 tbsp crushed almonds'
+        '200g Greek yogurt (0% fat) - Tesco £1.20, Asda £1.15, Waitrose £1.45, M&S £1.60',
+        '1 scoop vanilla protein powder - Tesco £8.50, Asda £8.20, Waitrose £12.00, M&S £11.50',
+        '2 tbsp granola - Tesco £2.10, Asda £1.95, Waitrose £3.20, M&S £2.95',
+        '100g mixed berries - Tesco £2.50, Asda £2.30, Waitrose £3.80, M&S £3.50',
+        '1 tbsp almond butter - Tesco £3.20, Asda £3.00, Waitrose £4.50, M&S £4.25',
+        '1 tbsp chia seeds - Tesco £2.80, Asda £2.60, Waitrose £3.95, M&S £3.70',
+        '1 tsp honey - Tesco £2.40, Asda £2.20, Waitrose £4.80, M&S £4.50',
+        '2 tbsp crushed almonds - Tesco £3.50, Asda £3.20, Waitrose £5.20, M&S £4.95'
       ],
       'Turkey Meatballs & Veg': [
-        '500g lean ground turkey',
-        '1 egg',
-        '1/4 cup breadcrumbs',
-        '2 cloves garlic, minced',
-        '1 onion, finely diced',
-        '200g green beans, trimmed',
-        '1 cup brown rice, cooked',
-        '2 tbsp olive oil',
-        '1 tsp Italian seasoning',
-        'Salt and pepper'
+        '500g lean ground turkey - Tesco £5.50, Asda £5.20, Waitrose £8.50, M&S £8.00',
+        '1 egg - Tesco £2.50, Asda £2.30, Waitrose £3.80, M&S £3.50',
+        '1/4 cup breadcrumbs - Tesco £1.20, Asda £1.10, Waitrose £1.85, M&S £1.70',
+        '2 cloves garlic, minced - Tesco £0.80, Asda £0.75, Waitrose £1.20, M&S £1.10',
+        '1 onion, finely diced - Tesco £1.00, Asda £0.90, Waitrose £1.50, M&S £1.40',
+        '200g green beans, trimmed - Tesco £1.80, Asda £1.60, Waitrose £2.80, M&S £2.50',
+        '1 cup brown rice, cooked - Tesco £2.00, Asda £1.85, Waitrose £3.20, M&S £2.95',
+        '2 tbsp olive oil - Tesco £3.00, Asda £2.80, Waitrose £5.50, M&S £5.00',
+        '1 tsp Italian seasoning - Tesco £1.50, Asda £1.40, Waitrose £2.40, M&S £2.20',
+        'Salt and pepper - Tesco £0.80, Asda £0.75, Waitrose £1.20, M&S £1.10'
       ],
       'Lentil & Sweet Potato Curry': [
-        '1 cup red lentils',
-        '2 sweet potatoes, cubed',
-        '1 onion, diced',
-        '2 cloves garlic, minced',
-        '1 tbsp curry powder',
-        '400ml coconut milk',
-        '2 tbsp olive oil',
-        '1 tsp turmeric',
-        'Salt and pepper',
-        'Fresh cilantro'
+        '1 cup red lentils - Tesco £1.50, Asda £1.35, Waitrose £2.40, M&S £2.20',
+        '2 sweet potatoes, cubed - Tesco £1.80, Asda £1.60, Waitrose £2.80, M&S £2.50',
+        '1 onion, diced - Tesco £1.00, Asda £0.90, Waitrose £1.50, M&S £1.40',
+        '2 cloves garlic, minced - Tesco £0.80, Asda £0.75, Waitrose £1.20, M&S £1.10',
+        '1 tbsp curry powder - Tesco £2.20, Asda £2.00, Waitrose £3.80, M&S £3.50',
+        '400ml coconut milk - Tesco £1.80, Asda £1.65, Waitrose £2.95, M&S £2.70',
+        '2 tbsp olive oil - Tesco £3.00, Asda £2.80, Waitrose £5.50, M&S £5.00',
+        '1 tsp turmeric - Tesco £1.80, Asda £1.65, Waitrose £2.95, M&S £2.70',
+        'Salt and pepper - Tesco £0.80, Asda £0.75, Waitrose £1.20, M&S £1.10',
+        'Fresh cilantro - Tesco £1.20, Asda £1.10, Waitrose £1.85, M&S £1.70'
       ],
       'Cauliflower Buffalo Bites': [
-        '1 head cauliflower, cut into florets',
-        '1/2 cup flour',
-        '1/2 cup water',
-        '1 tsp garlic powder',
-        '1/2 cup buffalo sauce',
-        '2 tbsp olive oil',
-        'Salt and pepper',
-        'Green onions for garnish'
+        '1 head cauliflower, cut into florets - Tesco £1.50, Asda £1.35, Waitrose £2.40, M&S £2.20',
+        '1/2 cup flour - Tesco £1.00, Asda £0.90, Waitrose £1.50, M&S £1.40',
+        '1/2 cup water - Free from tap',
+        '1 tsp garlic powder - Tesco £1.80, Asda £1.65, Waitrose £2.95, M&S £2.70',
+        '1/2 cup buffalo sauce - Tesco £2.50, Asda £2.30, Waitrose £4.20, M&S £3.80',
+        '2 tbsp olive oil - Tesco £3.00, Asda £2.80, Waitrose £5.50, M&S £5.00',
+        'Salt and pepper - Tesco £0.80, Asda £0.75, Waitrose £1.20, M&S £1.10',
+        'Green onions for garnish - Tesco £1.20, Asda £1.10, Waitrose £1.85, M&S £1.70'
       ]
     };
     return ingredientsMap[recipeName] || ['Ingredients not available'];

@@ -37,7 +37,7 @@ export class PriceComparisonService {
     try {
       // Get available supermarkets (for now, we'll use all supermarkets)
       // In a full implementation, this would check which stores are actually within radius
-      const availableSupermarkets: Supermarket[] = ['tesco', 'asda', 'sainsburys', 'morrisons'];
+      const availableSupermarkets: Supermarket[] = ['tesco', 'asda', 'sainsburys', 'morrisons', 'aldi', 'waitrose', 'marks-spencer'];
       
       // Match ingredients to products for each supermarket
       const ingredientMatches = await this.matcher.matchIngredients(ingredients, availableSupermarkets);
@@ -153,19 +153,22 @@ export class PriceComparisonService {
     }
 
     // Use default price
-    return this.applySupermarketMultiplier(categoryPrices.default, supermarket);
+    return this.applySupermarketMultiplier(categoryPrices.default || 2.50, supermarket);
   }
 
-  private applySupermarketMultiplier(basePrice: number, supermarket: Supermarket): number {
-    // Different supermarkets have different price points
+  private applySupermarketMultiplier(price: number, supermarket: Supermarket): number {
+    // Apply realistic price multipliers based on store positioning
     const multipliers: Record<Supermarket, number> = {
-      'tesco': 1.0,      // Base price
-      'sainsburys': 1.05, // Slightly higher
-      'asda': 0.95,      // Slightly lower
-      'morrisons': 0.98   // Slightly lower
+      'aldi': 0.85,        // Budget option
+      'asda': 0.92,        // Value retailer
+      'tesco': 1.0,        // Baseline
+      'morrisons': 1.05,   // Slightly premium
+      'sainsburys': 1.08,  // Premium positioning
+      'waitrose': 1.35,    // Premium/luxury
+      'marks-spencer': 1.28 // Premium quality
     };
-
-    return basePrice * (multipliers[supermarket] ?? 1.0);
+    
+    return price * (multipliers[supermarket] || 1.0);
   }
 
   private getStoreLocation(supermarket: Supermarket, postcode: string): StoreLocation {
@@ -194,6 +197,21 @@ export class PriceComparisonService {
         name: 'Morrisons Supermarket',
         address: `Near ${postcode}`,
         distance_miles: Math.random() * 8 + 1
+      },
+      'aldi': {
+        name: 'Aldi',
+        address: `Near ${postcode}`,
+        distance_miles: Math.random() * 8 + 1
+      },
+      'waitrose': {
+        name: 'Waitrose & Partners',
+        address: `Near ${postcode}`,
+        distance_miles: Math.random() * 8 + 1
+      },
+      'marks-spencer': {
+        name: 'M&S Food',
+        address: `Near ${postcode}`,
+        distance_miles: Math.random() * 8 + 1
       }
     };
 
@@ -213,7 +231,7 @@ export class PriceComparisonService {
     }
 
     const allProducts = [];
-    const supermarkets: Supermarket[] = ['tesco', 'asda', 'sainsburys', 'morrisons'];
+    const supermarkets: Supermarket[] = ['tesco', 'asda', 'sainsburys', 'morrisons', 'aldi', 'waitrose', 'marks-spencer'];
     
     for (const sm of supermarkets) {
       const products = this.db.getProductsBySupermarket(sm)
@@ -248,7 +266,7 @@ export class PriceComparisonService {
   public async getStoreStats(): Promise<Record<Supermarket, { total_products: number, avg_price: number, last_updated: string }>> {
     const db = this.db.getDatabase();
     const stats: any = {};
-    const supermarkets: Supermarket[] = ['tesco', 'asda', 'sainsburys', 'morrisons'];
+    const supermarkets: Supermarket[] = ['tesco', 'asda', 'sainsburys', 'morrisons', 'aldi', 'waitrose', 'marks-spencer'];
 
     for (const supermarket of supermarkets) {
       const query = `
@@ -274,7 +292,7 @@ export class PriceComparisonService {
     }
 
     const results: any = {};
-    const supermarkets: Supermarket[] = ['tesco', 'asda', 'sainsburys', 'morrisons'];
+    const supermarkets: Supermarket[] = ['tesco', 'asda', 'sainsburys', 'morrisons', 'aldi', 'waitrose', 'marks-spencer'];
     
     for (const sm of supermarkets) {
       results[sm] = await this.matcher.testMatch(ingredient, sm);

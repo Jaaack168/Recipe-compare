@@ -88,6 +88,8 @@ export interface CartItem {
     morrisons: number;
     sainsburys: number;
     aldi: number;
+    waitrose: number;
+    'marks-spencer': number;
   };
   recipeId: number;
   recipeTitle: string;
@@ -95,7 +97,7 @@ export interface CartItem {
   essential?: boolean;
 }
 
-export type Supermarket = 'tesco' | 'asda' | 'morrisons' | 'sainsburys' | 'aldi';
+export type Supermarket = 'tesco' | 'asda' | 'morrisons' | 'sainsburys' | 'aldi' | 'waitrose' | 'marks-spencer';
 
 export type SupermarketOrAll = Supermarket | 'all';
 
@@ -104,5 +106,7 @@ export const STORE_NAMES: Record<Supermarket, string> = {
   asda: 'ASDA',
   morrisons: 'Morrisons',
   sainsburys: 'Sainsbury\'s',
-  aldi: 'Aldi'
+  aldi: 'Aldi',
+  waitrose: 'Waitrose',
+  'marks-spencer': 'M&S'
 }; 

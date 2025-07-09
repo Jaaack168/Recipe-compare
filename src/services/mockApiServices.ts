@@ -47,18 +47,36 @@ const mockStores: Store[] = [
     isOpen: true,
     deliveryAvailable: false,
     collectionAvailable: true
+  },
+  {
+    id: 'waitrose-001',
+    name: 'Waitrose',
+    logoUrl: '/logos/waitrose.png',
+    distance: 1.8,
+    isOpen: true,
+    deliveryAvailable: true,
+    collectionAvailable: true
+  },
+  {
+    id: 'marks-spencer-001',
+    name: 'M&S',
+    logoUrl: '/logos/marks-spencer.png',
+    distance: 2.3,
+    isOpen: true,
+    deliveryAvailable: true,
+    collectionAvailable: true
   }
 ];
 
 // Mock ingredient availability (simulates some items being out of stock)
 const mockIngredientAvailability: Record<string, Record<string, boolean>> = {
   // Ingredient ID -> Store ID -> In Stock
-  '101': { 'tesco-001': true, 'asda-001': true, 'sainsburys-001': true, 'morrisons-001': false, 'aldi-001': true },
-  '102': { 'tesco-001': true, 'asda-001': false, 'sainsburys-001': true, 'morrisons-001': true, 'aldi-001': true },
-  '103': { 'tesco-001': true, 'asda-001': true, 'sainsburys-001': true, 'morrisons-001': true, 'aldi-001': false },
-  '201': { 'tesco-001': false, 'asda-001': true, 'sainsburys-001': true, 'morrisons-001': true, 'aldi-001': true },
-  '202': { 'tesco-001': true, 'asda-001': true, 'sainsburys-001': false, 'morrisons-001': true, 'aldi-001': true },
-  '203': { 'tesco-001': true, 'asda-001': true, 'sainsburys-001': true, 'morrisons-001': true, 'aldi-001': true }
+  '101': { 'tesco-001': true, 'asda-001': true, 'sainsburys-001': true, 'morrisons-001': false, 'aldi-001': true, 'waitrose-001': true, 'marks-spencer-001': true },
+  '102': { 'tesco-001': true, 'asda-001': false, 'sainsburys-001': true, 'morrisons-001': true, 'aldi-001': true, 'waitrose-001': true, 'marks-spencer-001': false },
+  '103': { 'tesco-001': true, 'asda-001': true, 'sainsburys-001': true, 'morrisons-001': true, 'aldi-001': false, 'waitrose-001': true, 'marks-spencer-001': true },
+  '201': { 'tesco-001': false, 'asda-001': true, 'sainsburys-001': true, 'morrisons-001': true, 'aldi-001': true, 'waitrose-001': true, 'marks-spencer-001': true },
+  '202': { 'tesco-001': true, 'asda-001': true, 'sainsburys-001': false, 'morrisons-001': true, 'aldi-001': true, 'waitrose-001': false, 'marks-spencer-001': true },
+  '203': { 'tesco-001': true, 'asda-001': true, 'sainsburys-001': true, 'morrisons-001': true, 'aldi-001': true, 'waitrose-001': true, 'marks-spencer-001': true }
 };
 
 // Mock postcode validation
@@ -164,7 +182,9 @@ export const mockApiServices = {
         'asda-001': 'asda',
         'sainsburys-001': 'sainsburys',
         'morrisons-001': 'morrisons',
-        'aldi-001': 'aldi'
+        'aldi-001': 'aldi',
+        'waitrose-001': 'waitrose',
+        'marks-spencer-001': 'marks-spencer'
       };
       
       const supermarketKey = storeMapping[store.id];

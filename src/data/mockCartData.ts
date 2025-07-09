@@ -69,6 +69,22 @@ export const STORES: Store[] = [
     deliveryFee: 4.99,
     loyaltyProgram: '',
     color: 'blue'
+  },
+  {
+    id: 'waitrose',
+    name: 'Waitrose',
+    logo: '🟫',
+    deliveryFee: 6.99,
+    loyaltyProgram: 'myWaitrose',
+    color: 'emerald'
+  },
+  {
+    id: 'marks-spencer',
+    name: 'M&S',
+    logo: '🟪',
+    deliveryFee: 5.99,
+    loyaltyProgram: 'Sparks',
+    color: 'purple'
   }
 ];
 
@@ -157,9 +173,27 @@ export const MOCK_STORE_BREAKDOWN: StoreBreakdown[] = [
     total: 4.99,
     itemsAvailable: 0,
     totalItems: 4
+  },
+  {
+    store: STORES[5], // Waitrose
+    subtotal: 0,
+    deliveryFee: 6.99,
+    total: 6.99,
+    itemsAvailable: 0,
+    totalItems: 4,
+    savings: 2.50,
+    comparedTo: 'M&S'
+  },
+  {
+    store: STORES[6], // M&S
+    subtotal: 0,
+    deliveryFee: 5.99,
+    total: 5.99,
+    itemsAvailable: 0,
+    totalItems: 4
   }
 ];
 
 export type SortOption = 'lowest-price' | 'best-savings' | 'by-store';
 export type ShoppingMode = 'smart-cart' | 'single-store';
-export type StoreFilter = 'all' | 'tesco' | 'asda' | 'morrisons' | 'sainsburys' | 'aldi'; 
+export type StoreFilter = 'all' | 'tesco' | 'asda' | 'morrisons' | 'sainsburys' | 'aldi' | 'waitrose' | 'marks-spencer'; 

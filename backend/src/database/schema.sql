@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS products (
     brand TEXT,
     size TEXT,
     unit TEXT,
-    supermarket TEXT CHECK(supermarket IN ('tesco', 'asda', 'sainsburys', 'morrisons')) NOT NULL,
+    supermarket TEXT CHECK(supermarket IN ('tesco', 'asda', 'sainsburys', 'morrisons', 'aldi', 'waitrose', 'marks-spencer')) NOT NULL,
     product_url TEXT NOT NULL,
     scraped_at DATETIME NOT NULL,
     last_updated DATETIME NOT NULL,

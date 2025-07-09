@@ -343,28 +343,36 @@ export class ProductAvailabilityService {
         'sainsburys': { min: 3.80, max: 8.50 },
         'asda': { min: 3.20, max: 7.50 },
         'morrisons': { min: 3.40, max: 7.80 },
-        'aldi': { min: 2.80, max: 6.50 }
+        'aldi': { min: 2.80, max: 6.50 },
+        'waitrose': { min: 5.20, max: 12.00 },
+        'marks-spencer': { min: 4.80, max: 11.50 }
       },
       'vegetables': {
         'tesco': { min: 0.80, max: 3.00 },
         'sainsburys': { min: 0.90, max: 3.20 },
         'asda': { min: 0.70, max: 2.80 },
         'morrisons': { min: 0.75, max: 2.90 },
-        'aldi': { min: 0.60, max: 2.50 }
+        'aldi': { min: 0.60, max: 2.50 },
+        'waitrose': { min: 1.20, max: 4.50 },
+        'marks-spencer': { min: 1.10, max: 4.20 }
       },
       'oils': {
         'tesco': { min: 1.50, max: 5.00 },
         'sainsburys': { min: 1.60, max: 5.50 },
         'asda': { min: 1.40, max: 4.80 },
         'morrisons': { min: 1.45, max: 4.90 },
-        'aldi': { min: 1.20, max: 4.20 }
+        'aldi': { min: 1.20, max: 4.20 },
+        'waitrose': { min: 2.50, max: 8.50 },
+        'marks-spencer': { min: 2.20, max: 7.80 }
       },
       'grains': {
         'tesco': { min: 1.00, max: 4.00 },
         'sainsburys': { min: 1.10, max: 4.20 },
         'asda': { min: 0.90, max: 3.80 },
         'morrisons': { min: 0.95, max: 3.90 },
-        'aldi': { min: 0.80, max: 3.50 }
+        'aldi': { min: 0.80, max: 3.50 },
+        'waitrose': { min: 1.60, max: 6.50 },
+        'marks-spencer': { min: 1.45, max: 6.00 }
       }
     };
 
