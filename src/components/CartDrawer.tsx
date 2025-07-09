@@ -195,6 +195,10 @@ export function CartDrawer() {
                 onBreakdownClick={() => setIsBreakdownModalOpen(true)}
                 onCheckoutClick={() => console.log('Proceeding to checkout')}
                 onSwitchToCheapest={() => console.log('Switching to cheapest store')}
+                selectedStore={selectedStore}
+                cheapestStore={MOCK_STORE_BREAKDOWN.reduce((cheapest, current) => 
+                  current.total < cheapest.total ? current : cheapest
+                ).store.id}
               />
             </div>
           )}
