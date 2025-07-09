@@ -1,35 +1,39 @@
-🛒 Compare – UK Grocery Price Comparison Prototype
-
-Compare is a portfolio project designed to explore and prototype an idea:
-A smarter, UK-focused grocery shopping app that finds the cheapest supermarket for your full basket.
-
-⸻
-
 💡 Project Overview
 
-The idea behind Compare is simple but powerful:
-	•	You pick your recipes (from a built-in library or imported manually)
-	•	The app builds your full shopping list
-	•	It then compares prices across major UK supermarkets (Tesco, Asda, Sainsbury’s, Aldi, Morrisons)
-	•	You get a clear breakdown of which store is cheapest overall — or by item
-	•	You can choose “Single Store Mode” or a smart split to balance savings and convenience
+The concept is simple but powerful:
+	•	🧾 Choose your recipes (from a built-in library or add your own)
+	•	🛍️ The app builds your shopping list automatically
+	•	🛒 It compares prices across major UK supermarkets:
+	•	Tesco
+	•	Asda
+	•	Sainsbury’s
+	•	Aldi
+	•	Morrisons
+	•	📊 You get a clear breakdown of which store is cheapest:
+	•	Overall
+	•	Per item
+	•	🧠 Choose between:
+	•	Single Store Mode for convenience
+	•	Smart Split for maximum savings
 
 ⸻
 
-🎯 Purpose
+🎯 Project Purpose
 
-This is a personal portfolio project, built to:
-	•	Expand my front-end development skills
-	•	Learn how to integrate external data sources and APIs
-	•	Explore algorithmic price comparison logic
-	•	Build a working prototype I can share publicly
-	•	Demonstrate my design and UX thinking as a freelance developer
+This app was built as a personal freelance portfolio project to:
+	•	Expand and refine front-end development skills
+	•	Learn integration patterns with external data sources and APIs
+	•	Explore logic for smart, algorithm-driven price comparison
+	•	Build a real, usable prototype to share publicly
+	•	Demonstrate design systems, UI/UX thinking, and logic flow
 
-This project is not connected to live supermarket APIs (yet) — pricing is placeholder/simulated. The focus is on UI/UX, logic structure, and usability.
+⚠️ This is not connected to live APIs (yet). Prices and availability are currently simulated using local mock data. Focus is on user experience, UI, and core logic.
 
 ⸻
 
 🛠 Tech Stack
-	•	Vite + React + TypeScript
-	•	Tailwind CSS
-	•	Local JSON mocks for testing comparison logic
+	•	Frontend: Vite + React + TypeScript
+	•	Styling: Tailwind CSS
+	•	Backend: Node.js + Express (local dev only)
+	•	Database: SQLite (mock data for now)
+	•	Data: JSON mocks for product and pricing simulation
