@@ -265,6 +265,9 @@ interface CartContextType {
   getBestStore: () => Promise<StoreRecommendation | null>;
   refreshAvailability: () => Promise<void>;
   isLoadingRecommendations: boolean;
+  // Cart drawer state
+  cartOpen: boolean;
+  setCartOpen: (open: boolean) => void;
 }
 
 const CartContext = createContext<{ state: CartState; dispatch: React.Dispatch<CartAction> } | undefined>(undefined);
