@@ -59,20 +59,20 @@ export function CartSummary({
           <span className="font-medium">£{subtotal.toFixed(2)}</span>
         </div>
         
-        {/* Line 2: Total with loyalty (only show if different from subtotal) */}
-        {loyaltySchemeName && selectedStore !== 'all' && total !== subtotal && (
-          <div className="flex justify-between text-sm">
-            <span className="text-gray-600">Total (with {loyaltySchemeName})</span>
-            <span className="font-medium">£{total.toFixed(2)}</span>
-          </div>
-        )}
+        {/* Line 2: Total with loyalty */}
+        <div className="flex justify-between text-sm">
+          <span className="text-gray-600">
+            Total {loyaltySchemeName && selectedStore !== 'all' ? `(with ${loyaltySchemeName})` : ''}
+          </span>
+          <span className="font-semibold text-lg">£{total.toFixed(2)}</span>
+        </div>
         
-        {/* Line 3 & 4: Savings display */}
+        {/* Line 3: Your Savings (in green and bold) */}
         <div className="border-t border-gray-200 pt-3">
-          <div className="flex justify-between font-semibold text-lg text-green-600">
+          <div className="flex justify-between font-bold text-lg text-green-600">
             <span className="flex items-center">
               {shoppingMode === 'smart-cart' && <Zap size={16} className="mr-1" />}
-              You're saving
+              Your Savings:
             </span>
             <span>£{savings.toFixed(2)}</span>
           </div>

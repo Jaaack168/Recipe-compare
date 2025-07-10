@@ -261,4 +261,60 @@ export class PriceCalculator {
       savings: maxPrice - price
     })).sort((a, b) => a.price - b.price); // Sort by price ascending
   }
+
+  /**
+   * Generate store breakdown data for all stores with current cart
+   */
+  static generateStoreBreakdown(
+    cartItems: Array<{ recipeName: string; quantity: number }>
+  ): Array<{
+    store: {
+      id: string;
+      name: string;
+      loyaltyProgram?: string;
+      color: string;
+    };
+    subtotal: number;
+    total: number;
+    itemsAvailable: number;
+    totalItems: number;
+  }> {
+    const stores = [
+      { id: 'tesco', name: 'Tesco', loyaltyProgram: 'Clubcard', color: 'blue' },
+      { id: 'asda', name: 'Asda', loyaltyProgram: 'Asda Rewards', color: 'green' },
+      { id: 'morrisons', name: 'Morrisons', loyaltyProgram: 'More Card', color: 'yellow' },
+      { id: 'sainsburys', name: "Sainsbury's", loyaltyProgram: 'Nectar', color: 'orange' },
+      { id: 'aldi', name: 'Aldi', loyaltyProgram: '', color: 'blue' },
+      { id: 'waitrose', name: 'Waitrose', loyaltyProgram: 'myWaitrose', color: 'emerald' },
+      { id: 'marks-spencer', name: 'M&S', loyaltyProgram: 'Sparks', color: 'purple' }
+    ];
+
+    return stores.map(store => {
+      // Calculate subtotal (without loyalty)
+      const subtotal = this.calculateTotal(cartItems, {
+        selectedStore: store.id as StoreFilter,
+        shoppingMode: 'single-store',
+        applyLoyalty: false
+      });
+
+      // Calculate total (with loyalty)
+      const total = this.calculateTotal(cartItems, {
+        selectedStore: store.id as StoreFilter,
+        shoppingMode: 'single-store',
+        applyLoyalty: true
+      });
+
+      // Count available items (all items are available for all stores in our mock data)
+      const itemsAvailable = cartItems.length;
+      const totalItems = cartItems.length;
+
+      return {
+        store,
+        subtotal,
+        total,
+        itemsAvailable,
+        totalItems
+      };
+    });
+  }
 } 

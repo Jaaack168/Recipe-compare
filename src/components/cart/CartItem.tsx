@@ -107,9 +107,22 @@ export function CartItem({ item, onQuantityChange, onRemove, selectedStore, shop
         </div>
         
         <div className="flex items-center gap-2 mb-2">
-          <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium border ${getStoreColor(item.store.id)}`}>
-            {item.store.name}
-          </span>
+          {selectedStore !== 'all' && (
+            <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium border ${getStoreColor(selectedStore)}`}>
+              {selectedStore === 'tesco' && 'Tesco'}
+              {selectedStore === 'asda' && 'Asda'}
+              {selectedStore === 'morrisons' && 'Morrisons'}
+              {selectedStore === 'sainsburys' && "Sainsbury's"}
+              {selectedStore === 'aldi' && 'Aldi'}
+              {selectedStore === 'waitrose' && 'Waitrose'}
+              {selectedStore === 'marks-spencer' && 'M&S'}
+            </span>
+          )}
+          {selectedStore === 'all' && (
+            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium border bg-gray-50 text-gray-700 border-gray-200">
+              Smart Cart
+            </span>
+          )}
           {!item.available && (
             <button
               onClick={() => setShowIngredients(!showIngredients)}

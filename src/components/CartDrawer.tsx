@@ -10,7 +10,6 @@ import {
 } from './cart';
 import { 
   MOCK_CART_ITEMS, 
-  MOCK_STORE_BREAKDOWN,
   type CartItem as CartItemType,
   type StoreFilter,
   type ShoppingMode,
@@ -158,9 +157,15 @@ export function CartDrawer() {
                 onCheckoutClick={() => console.log('Proceeding to checkout')}
                 onSwitchToCheapest={() => console.log('Switching to cheapest store')}
                 selectedStore={selectedStore}
-                cheapestStore={MOCK_STORE_BREAKDOWN.reduce((cheapest, current) => 
-                  current.total < cheapest.total ? current : cheapest
-                ).store.id}
+                cheapestStore={(() => {
+                  const breakdown = PriceCalculator.generateStoreBreakdown(cartItems.map(item => ({ 
+                    recipeName: item.recipeName, 
+                    quantity: item.quantity 
+                  })));
+                  return breakdown.reduce((cheapest, current) => 
+                    current.total < cheapest.total ? current : cheapest
+                  ).store.id;
+                })()}
                 shoppingMode={shoppingMode}
                 cartItems={cartItems.map(item => ({ 
                   recipeName: item.recipeName, 
@@ -176,12 +181,37 @@ export function CartDrawer() {
       <BreakdownModal
         isOpen={isBreakdownModalOpen}
         onClose={() => setIsBreakdownModalOpen(false)}
-        storeBreakdowns={MOCK_STORE_BREAKDOWN}
-        cheapestStore={MOCK_STORE_BREAKDOWN.reduce((cheapest, current) => 
-          current.total < cheapest.total ? current : cheapest
-        ).store.name}
-        savings={15.50}
-        comparedTo="Sainsbury's"
+        storeBreakdowns={PriceCalculator.generateStoreBreakdown(cartItems.map(item => ({ 
+          recipeName: item.recipeName, 
+          quantity: item.quantity 
+        })))}
+        cheapestStore={(() => {
+          const breakdown = PriceCalculator.generateStoreBreakdown(cartItems.map(item => ({ 
+            recipeName: item.recipeName, 
+            quantity: item.quantity 
+          })));
+          return breakdown.reduce((cheapest, current) => 
+            current.total < cheapest.total ? current : cheapest
+          ).store.name;
+        })()}
+        savings={(() => {
+          const breakdown = PriceCalculator.generateStoreBreakdown(cartItems.map(item => ({ 
+            recipeName: item.recipeName, 
+            quantity: item.quantity 
+          })));
+          const cheapestTotal = Math.min(...breakdown.map(store => store.total));
+          const mostExpensiveTotal = Math.max(...breakdown.map(store => store.total));
+          return mostExpensiveTotal - cheapestTotal;
+        })()}
+        comparedTo={(() => {
+          const breakdown = PriceCalculator.generateStoreBreakdown(cartItems.map(item => ({ 
+            recipeName: item.recipeName, 
+            quantity: item.quantity 
+          })));
+          return breakdown.reduce((mostExpensive, current) => 
+            current.total > mostExpensive.total ? current : mostExpensive
+          ).store.name;
+        })()}
       />
     </>
   );
