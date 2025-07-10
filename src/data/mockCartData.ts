@@ -179,5 +179,4 @@ export const MOCK_STORE_BREAKDOWN: StoreBreakdown[] = [
 ];
 
 export type SortOption = 'lowest-price' | 'best-savings' | 'by-store';
-export type ShoppingMode = 'smart-cart' | 'single-store';
 export type StoreFilter = 'all' | 'tesco' | 'asda' | 'morrisons' | 'sainsburys' | 'aldi' | 'waitrose' | 'marks-spencer'; 

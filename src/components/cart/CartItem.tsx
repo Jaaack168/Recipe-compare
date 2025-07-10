@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Trash2, Edit3, ChevronDown, ChevronUp } from 'lucide-react';
-import type { CartItem as CartItemType, StoreFilter, ShoppingMode } from '../../data/mockCartData';
+import type { CartItem as CartItemType, StoreFilter } from '../../data/mockCartData';
 import { PriceCalculator } from '../../utils/priceCalculator';
 
 interface CartItemProps {
@@ -8,17 +8,16 @@ interface CartItemProps {
   onQuantityChange: (id: string, quantity: number) => void;
   onRemove: (id: string) => void;
   selectedStore: StoreFilter;
-  shoppingMode: ShoppingMode;
 }
 
-export function CartItem({ item, onQuantityChange, onRemove, selectedStore, shoppingMode }: CartItemProps) {
+export function CartItem({ item, onQuantityChange, onRemove, selectedStore }: CartItemProps) {
   const [showIngredients, setShowIngredients] = useState(false);
 
   const formatPrice = () => {
     // Calculate price using the recipe name and cart settings
     const calculatedPrice = PriceCalculator.calculateRecipePrice(item.recipeName, {
       selectedStore,
-      shoppingMode,
+      shoppingMode: 'single-store',
       quantity: item.quantity
     });
     
@@ -120,7 +119,7 @@ export function CartItem({ item, onQuantityChange, onRemove, selectedStore, shop
           )}
           {selectedStore === 'all' && (
             <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium border bg-gray-50 text-gray-700 border-gray-200">
-              Smart Cart
+              All Stores
             </span>
           )}
           {!item.available && (

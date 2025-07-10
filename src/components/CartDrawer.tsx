@@ -3,7 +3,6 @@ import { ChevronDown, X } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { 
   StoreToggle,
-  ShoppingModeToggle,
   CartItem,
   CartSummary,
   BreakdownModal
@@ -12,7 +11,6 @@ import {
   MOCK_CART_ITEMS, 
   type CartItem as CartItemType,
   type StoreFilter,
-  type ShoppingMode,
   type SortOption 
 } from '../data/mockCartData';
 import { PriceCalculator } from '../utils/priceCalculator';
@@ -20,7 +18,6 @@ import { PriceCalculator } from '../utils/priceCalculator';
 export function CartDrawer() {
   const { cartOpen, setCartOpen } = useCart();
   const [selectedStore, setSelectedStore] = useState<StoreFilter>('all');
-  const [shoppingMode, setShoppingMode] = useState<ShoppingMode>('single-store');
   const [sortOption, setSortOption] = useState<SortOption>('lowest-price');
   const [cartItems, setCartItems] = useState<CartItemType[]>(MOCK_CART_ITEMS);
   const [isBreakdownModalOpen, setIsBreakdownModalOpen] = useState(false);
@@ -87,11 +84,7 @@ export function CartDrawer() {
             onStoreChange={setSelectedStore}
           />
 
-          {/* Shopping Mode */}
-          <ShoppingModeToggle 
-            mode={shoppingMode}
-            onModeChange={setShoppingMode}
-          />
+
 
           {/* Sorting Options */}
           <div className="flex items-center justify-between">
@@ -131,7 +124,6 @@ export function CartDrawer() {
                       onQuantityChange={handleQuantityChange}
                       onRemove={handleRemoveItem}
                       selectedStore={selectedStore}
-                      shoppingMode={shoppingMode}
                     />
                   ))}
                 </div>
@@ -166,7 +158,6 @@ export function CartDrawer() {
                     current.total < cheapest.total ? current : cheapest
                   ).store.id;
                 })()}
-                shoppingMode={shoppingMode}
                 cartItems={cartItems.map(item => ({ 
                   recipeName: item.recipeName, 
                   quantity: item.quantity 

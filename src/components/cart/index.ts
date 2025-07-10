@@ -1,6 +1,5 @@
 export { BottomNav } from './BottomNav';
 export { StoreToggle } from './StoreToggle';
-export { ShoppingModeToggle } from './ShoppingMode';
 export { CartItem } from './CartItem';
 export { CartSummary } from './CartSummary';
 export { BreakdownModal } from './BreakdownModal'; 

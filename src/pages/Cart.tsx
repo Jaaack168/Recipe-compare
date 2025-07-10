@@ -3,7 +3,6 @@ import { ChevronDown } from 'lucide-react';
 import { 
   BottomNav,
   StoreToggle,
-  ShoppingModeToggle,
   CartItem,
   CartSummary,
   BreakdownModal
@@ -13,13 +12,11 @@ import {
   MOCK_STORE_BREAKDOWN,
   type CartItem as CartItemType,
   type StoreFilter,
-  type ShoppingMode,
   type SortOption 
 } from '../data/mockCartData';
 
 export function Cart() {
   const [selectedStore, setSelectedStore] = useState<StoreFilter>('all');
-  const [shoppingMode, setShoppingMode] = useState<ShoppingMode>('single-store');
   const [sortOption, setSortOption] = useState<SortOption>('lowest-price');
   const [cartItems, setCartItems] = useState<CartItemType[]>(MOCK_CART_ITEMS);
   const [isBreakdownModalOpen, setIsBreakdownModalOpen] = useState(false);
@@ -73,11 +70,7 @@ export function Cart() {
               onStoreChange={setSelectedStore}
             />
 
-            {/* Shopping Mode */}
-            <ShoppingModeToggle 
-              mode={shoppingMode}
-              onModeChange={setShoppingMode}
-            />
+
 
             {/* Sorting Options */}
             <div className="mb-6">
@@ -119,7 +112,6 @@ export function Cart() {
                         onQuantityChange={handleQuantityChange}
                         onRemove={handleRemoveItem}
                         selectedStore={selectedStore}
-                        shoppingMode={shoppingMode}
                       />
                     ))}
                   </div>
@@ -146,7 +138,6 @@ export function Cart() {
               onSwitchToCheapest={() => console.log('Switching to cheapest store')}
               selectedStore={selectedStore}
               cheapestStore="tesco"
-              shoppingMode={shoppingMode}
               cartItems={cartItems.map(item => ({ 
                 recipeName: item.recipeName, 
                 quantity: item.quantity 

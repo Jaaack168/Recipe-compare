@@ -1,6 +1,6 @@
 import React from 'react';
-import { ArrowRight, BarChart3, FileText, Zap } from 'lucide-react';
-import { STORES, ShoppingMode, StoreFilter } from '../../data/mockCartData';
+import { ArrowRight, BarChart3, FileText } from 'lucide-react';
+import { STORES, StoreFilter } from '../../data/mockCartData';
 import { PriceCalculator } from '../../utils/priceCalculator';
 
 interface CartSummaryProps {
@@ -9,7 +9,6 @@ interface CartSummaryProps {
   onSwitchToCheapest: () => void;
   selectedStore: StoreFilter;
   cheapestStore?: string;
-  shoppingMode: ShoppingMode;
   cartItems: Array<{ recipeName: string; quantity: number }>;
 }
 
@@ -19,20 +18,19 @@ export function CartSummary({
   onSwitchToCheapest,
   selectedStore,
   cheapestStore,
-  shoppingMode,
   cartItems
 }: CartSummaryProps) {
   // Calculate subtotal (without loyalty savings)
   const subtotal = PriceCalculator.calculateTotal(cartItems, {
     selectedStore,
-    shoppingMode,
+    shoppingMode: 'single-store',
     applyLoyalty: false
   });
 
   // Calculate total (with loyalty savings)
   const total = PriceCalculator.calculateTotal(cartItems, {
     selectedStore,
-    shoppingMode,
+    shoppingMode: 'single-store',
     applyLoyalty: true
   });
 
@@ -40,8 +38,8 @@ export function CartSummary({
   const mostExpensiveTotal = PriceCalculator.getMostExpensiveStoreTotal(cartItems);
   const savings = mostExpensiveTotal - total;
   
-  // Check if we're already on the cheapest store or in Smart Cart mode
-  const isOnCheapestStore = selectedStore === cheapestStore || selectedStore === 'all' || shoppingMode === 'smart-cart';
+  // Check if we're already on the cheapest store
+  const isOnCheapestStore = selectedStore === cheapestStore || selectedStore === 'all';
   
   // Get the loyalty scheme name for the selected store
   const loyaltySchemeName = PriceCalculator.getLoyaltySchemeName(selectedStore);
@@ -71,14 +69,12 @@ export function CartSummary({
         <div className="border-t border-gray-200 pt-3">
           <div className="flex justify-between font-bold text-lg text-green-600">
             <span className="flex items-center">
-              {shoppingMode === 'smart-cart' && <Zap size={16} className="mr-1" />}
               Your Savings:
             </span>
             <span>£{savings.toFixed(2)}</span>
           </div>
           <p className="text-xs text-gray-500 mt-1">
             vs. shopping at most expensive store
-            {shoppingMode === 'smart-cart' && ' (Smart Cart active)'}
           </p>
         </div>
       </div>
@@ -93,17 +89,8 @@ export function CartSummary({
               : 'border-gray-300 text-gray-700 bg-white hover:bg-gray-50'
           }`}
         >
-          {shoppingMode === 'smart-cart' ? (
-            <>
-              <Zap size={16} className="mr-2" />
-              Smart Cart Active
-            </>
-          ) : (
-            <>
-              <ArrowRight size={16} className="mr-2" />
-              {isOnCheapestStore ? 'Already on Cheapest Store' : 'Switch to Cheapest Store'}
-            </>
-          )}
+          <ArrowRight size={16} className="mr-2" />
+          {isOnCheapestStore ? 'Already on Cheapest Store' : 'Switch to Cheapest Store'}
         </button>
 
         <button

@@ -67,7 +67,7 @@ export const INGREDIENT_PRICING: Record<string, IngredientPrice> = {
 
 export interface PriceCalculationOptions {
   selectedStore: StoreFilter;
-  shoppingMode: 'smart-cart' | 'single-store';
+  shoppingMode: 'single-store';
   quantity?: number;
 }
 
@@ -86,23 +86,16 @@ export class PriceCalculator {
 
     const quantity = options.quantity || 1;
 
-    if (options.shoppingMode === 'smart-cart') {
-      // Smart Cart mode: find the cheapest available store
-      const prices = ingredientData.prices;
-      const cheapestPrice = Math.min(...Object.values(prices));
-      return cheapestPrice * quantity;
+    // Single store mode: use selected store price
+    if (options.selectedStore === 'all') {
+      // If 'all' is selected, show average price
+      const prices = Object.values(ingredientData.prices);
+      const averagePrice = prices.reduce((sum, price) => sum + price, 0) / prices.length;
+      return averagePrice * quantity;
     } else {
-      // Single store mode: use selected store price
-      if (options.selectedStore === 'all') {
-        // If 'all' is selected, show average price or cheapest
-        const prices = Object.values(ingredientData.prices);
-        const averagePrice = prices.reduce((sum, price) => sum + price, 0) / prices.length;
-        return averagePrice * quantity;
-      } else {
-        // Specific store selected
-        const storePrice = ingredientData.prices[options.selectedStore as keyof typeof ingredientData.prices];
-        return (storePrice || 0) * quantity;
-      }
+      // Specific store selected
+      const storePrice = ingredientData.prices[options.selectedStore as keyof typeof ingredientData.prices];
+      return (storePrice || 0) * quantity;
     }
   }
 
@@ -113,7 +106,7 @@ export class PriceCalculator {
     cartItems: Array<{ recipeName: string; quantity: number }>,
     options: { 
       selectedStore: StoreFilter;
-      shoppingMode: 'smart-cart' | 'single-store';
+      shoppingMode: 'single-store';
       applyLoyalty?: boolean;
     }
   ): number {
